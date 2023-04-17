@@ -1,0 +1,479 @@
+/* --------------------------------------------------------
+    For-plugin
+-----------------------------------------------------------*/
+.for(@i, @n) {.-each(@i)}
+.for(@n) when (isnumber(@n)) {.for(1, @n)}
+.for(@i, @n) when not (@i = @n)  {
+    .for((@i + (@n - @i) / abs(@n - @i)), @n);
+}
+.for(@array)   when (default()) {.for-impl_(length(@array))}
+.for-impl_(@i) when (@i > 1)    {.for-impl_((@i - 1))}
+.for-impl_(@i) when (@i > 0)    {.-each(extract(@array, @i))}
+
+/* --------------------------------------------------------
+    Paths
+-----------------------------------------------------------*/
+@imgpath:                               ~'./img';
+@fontpath:                              ~'./fonts';
+
+/* --------------------------------------------------------
+    Container
+-----------------------------------------------------------*/
+@container-tablet:                      100%;
+@container-desktop:                     100%;
+@container-large-desktop:               100%;
+
+/* --------------------------------------------------------
+    Template Variables
+-----------------------------------------------------------*/
+@header-height:                         60px;
+@sidebar-left-width:                    240px;
+@sidebar-left-mid-width:                64px;
+@logo-width:                            @sidebar-left-width;
+@logo-height:                           @header-height;
+@boxed-width:                           1170px;
+@body-bg:                               #edecec;
+@spacing:                               15px;
+@redash-radius:                         3px;
+
+/* --------------------------------------------------------
+    Branding
+-----------------------------------------------------------*/
+@brand-bg:                              #191C22;
+@sidebar:                               @brand-bg;
+@sidebar-active-bg:                     #121419;
+@color-dark:                            #9BA1B1;
+
+/* --------------------------------------------------------
+    Font
+-----------------------------------------------------------*/
+@font-icon:                             'Material-Design-Iconic-Font';
+@font-family-sans-serif:                'Roboto', sans-serif;
+@redash-font:                            -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+@font-size-base:                        13px;
+
+/* --------------------------------------------------------
+    Typograpgy
+-----------------------------------------------------------*/
+@text-color:                            #767676;
+@link:                                  #02a4c4;
+@link-hover-decoration:                 none;
+@headings-color:                        #333;
+
+/* --------------------------------------------------------
+    Form
+-----------------------------------------------------------*/
+@input-color:                           #595959;
+@input-color-placeholder:               #b4b4b4;
+@input-border:                          #e8e8e8;
+@input-border-radius:                   0;
+@input-border-radius-large:             0px;
+@redash-input-radius:                   2px;
+@input-height-large:                    40px;
+@input-height-base:                     35px;
+@input-height-small:                    30px;
+@input-border-focus:                    #79c2ff;
+@input-group-addon-bg:                  @light-gray;
+
+/* --------------------------------------------------------
+    Colors
+-----------------------------------------------------------*/
+@white:                                 #ffffff;
+@black:                                 #000000;
+@blue:                                  #2196F3;
+@red:                                   #F44336;
+@purple:                                #9C27B0;
+@deeppurple:                            #673AB7;
+@lightblue:                             #03A9F4;
+@cyan:                                  #00BCD4;
+@teal:                                  #009688;
+@green:                                 #4CAF50;
+@lightgreen:                            #8BC34A;
+@lime:                                  #CDDC39;
+@yellow:                                #FFEB3B;
+@yellow-darker:                         #fbd208;
+@amber:                                 #FFC107;
+@orange:                                #FF9800;
+@deeporange:                            #FF5722;
+@gray:                                  #9E9E9E;
+@bluegray:                              #607D8B;
+@indigo:                                #3F51B5;
+@pink:                                  #E91E63;
+@brown:                                 #795548;
+@light-gray:                            #FCFCFC;
+@gray-light:                            #828282;
+@ace:                                   #f8f8f8;
+
+@redash-gray: rgba(102, 136, 153, 1);
+@redash-orange: rgba(255, 120, 100, 1);
+@redash-black: rgba(0, 0, 0, 1);
+@redash-yellow: rgba(252, 252, 161, 0.75);
+
+ /** Form States **/
+@state-success-text:                    @green;
+@state-info-text:                       @blue;
+@state-danger-text:                     lighten(@red, 5%);
+
+/* --------------------------------------------------------
+    Alert
+-----------------------------------------------------------*/
+@alert-success-border:                  transparent;
+@alert-info-border:                     transparent;
+@alert-danger-border:		 	        transparent;
+@alert-inverse-border:		 	        transparent;
+
+@alert-success-bg:                      fade(@green, 70%);
+@alert-info-bg:		 		            fade(@blue, 70%);
+@alert-danger-bg:                       fade(@red, 70%);
+@alert-inverse-bg:                      #333;
+
+@alert-success-text:                    #fff;
+@alert-info-text:                       #fff;
+@alert-danger-text:                     #fff;
+@alert-inverse-text:                    #fff;
+
+/* --------------------------------------------------------
+    Bootstrap Brands
+-----------------------------------------------------------*/
+@brand-default:                         #eee;
+@brand-primary:                         @blue;
+@brand-info:                            @cyan;
+@brand-success:                         @green;
+@brand-warning:                         @orange;
+@brand-danger:                          @red;
+
+/* --------------------------------------------------------
+    Border Radius
+-----------------------------------------------------------*/
+@border-radius-base:                    2px;
+@border-radius-large:                   2px;
+@border-radius-small:                   2px;
+
+/* --------------------------------------------------------
+    Dropdown
+-----------------------------------------------------------*/
+@dropdown-fallback-border:              transparent;
+@dropdown-border:                       transparent;
+@dropdown-divider-bg:                   '';
+@dropdown-link-hover-bg:                rgba(0,0,0,0.075);
+@dropdown-link-color:                   #333;
+@dropdown-link-hover-color:             #333;
+@dropdown-link-disabled-color:          #e4e4e4;
+@dropdown-divider-bg:                   rgba(0,0,0,0.08);
+@dropdown-link-active-color:            #333;
+@dropdown-link-active-bg:               rgba(0, 0, 0, 0.075);
+@zindex-dropdown:                       9;
+@dropdown-shadow:                       0 2px 10px rgba(0, 0, 0, 0.2);
+
+/* --------------------------------------------------------
+    Page Header
+-----------------------------------------------------------*/
+@page-header-border-color:              transparent;
+
+/* --------------------------------------------------------
+    Buttons
+-----------------------------------------------------------*/
+@btn-default-border:                    @input-border;
+@btn-font-weight:				        400;
+
+/* --------------------------------------------------------
+    Tables
+-----------------------------------------------------------*/
+@table-bg:                              #fff;
+@table-border-color:                    #f0f0f0;
+@table-cell-padding:                    10px;
+@table-condensed-cell-padding:          7px;
+@table-bg-accent:                       @light-gray;
+@table-bg-active:                       #FFFCBE;
+@table-bg-hover:                        lighten(@light-gray, 2%);
+
+/* --------------------------------------------------------
+    Pagination
+-----------------------------------------------------------*/
+@pagination-bg:                         #E2E2E2;
+@pagination-border:                     #fff;
+@pagination-color:                      #7E7E7E;
+@pagination-active-bg:                  @lightblue;
+@pagination-active-border:              @pagination-border;
+@pagination-disabled-bg:                #E2E2E2;
+@pagination-disabled-border:            @pagination-border;
+@pagination-hover-color:                #333;
+@pagination-hover-bg:                   #d7d7d7;
+@pagination-hover-border:               @pagination-border;
+
+/* --------------------------------------------------------
+    Thumbnail
+-----------------------------------------------------------*/
+@thumbnail-bg:                          #fff;
+@thumbnail-border:                      #eee;
+
+/* --------------------------------------------------------
+    Carousel
+-----------------------------------------------------------*/
+@carousel-caption-color:                #fff;
+
+/* --------------------------------------------------------
+    Modal
+-----------------------------------------------------------*/
+@modal-content-fallback-border-color:	transparent;
+@modal-content-border-color:			transparent;
+@modal-backdrop-bg:						#000;
+@modal-header-border-color:				transparent;
+@modal-title-line-height:				transparent;
+@modal-footer-border-color:				transparent;
+@zindex-modal-background: 				10;
+
+/* --------------------------------------------------------
+    Tooltips
+-----------------------------------------------------------*/
+@tooltip-bg:                            #333;
+@tooltip-opacity:                       1;
+
+/* --------------------------------------------------------
+    Popobver
+-----------------------------------------------------------*/
+@zindex-popover:                        9;
+@popover-title-bg:                      #fff;
+@popover-border-color:                  #fff;
+@popover-fallback-border-color:         #fff;
+
+/* --------------------------------------------------------
+    Breacrumb
+-----------------------------------------------------------*/
+@breadcrumb-bg:                         transparent;
+@breadcrumb-padding-horizontal:         20px;
+@breadcrumb-active-color:               #7c7c7c;
+
+/* --------------------------------------------------------
+    Jumbotron
+-----------------------------------------------------------*/
+@jumbotron-bg:                          #F7F7F7;
+
+/* --------------------------------------------------------
+    List Group
+-----------------------------------------------------------*/
+@list-group-border:                     #f4f4f4;
+@list-group-active-color:               #000;
+@list-group-active-bg:                  #f5f5f5;
+@list-group-active-border:              @list-group-border;
+@list-group-disabled-color:             #B5B4B4;
+@list-group-disabled-bg:                #fff;
+@list-group-disabled-text-color:        #B5B4B4;
+
+/* --------------------------------------------------------
+    Badges
+-----------------------------------------------------------*/
+@badge-color:                           #fff;
+@badge-bg:                              @brand-primary;
+@badge-border-radius:                   2px;
+@badge-font-weight:                     400;
+@badge-active-color:                    #fff;
+@badge-active-bg:                       @brand-primary;
+
+/* --------------------------------------------------------
+    Misc
+-----------------------------------------------------------*/
+@code-bg:                               transparent;
+@tile-shadow:                           0 1px 1px rgba(0,0,0,0.07);
+
+
+// Media queries breakpoints
+// Extra small screen / phone
+//** Deprecated `@screen-xs` as of v3.0.1
+@screen-xs:                  480px;
+//** Deprecated `@screen-xs-min` as of v3.2.0
+@screen-xs-min:              @screen-xs;
+//** Deprecated `@screen-phone` as of v3.0.1
+@screen-phone:               @screen-xs-min;
+// Small screen / tablet
+//** Deprecated `@screen-sm` as of v3.0.1
+@screen-sm:                  768px;
+@screen-sm-min:              @screen-sm;
+//** Deprecated `@screen-tablet` as of v3.0.1
+@screen-tablet:              @screen-sm-min;
+// Medium screen / desktop
+//** Deprecated `@screen-md` as of v3.0.1
+@screen-md:                  992px;
+@screen-md-min:              @screen-md;
+//** Deprecated `@screen-desktop` as of v3.0.1
+@screen-desktop:             @screen-md-min;
+// Large screen / wide desktop
+//** Deprecated `@screen-lg` as of v3.0.1
+@screen-lg:                  1200px;
+@screen-lg-min:              @screen-lg;
+//** Deprecated `@screen-lg-desktop` as of v3.0.1
+@screen-lg-desktop:          @screen-lg-min;
+// So media queries don't overlap when required, provide a maximum
+@screen-xs-max:              (@screen-sm-min - 1);
+@screen-sm-max:              (@screen-md-min - 1);
+@screen-md-max:              (@screen-lg-min - 1);
+
+.transition(@transition) {
+    -webkit-transition: @transition;
+         -o-transition: @transition;
+            transition: @transition;
+}
+
+.transition-duration(@transition-duration) {
+    -webkit-transition-duration: @transition-duration;
+            transition-duration: @transition-duration;
+}
+
+.opacity(@opacity) {
+    @opacity-ie: (@opacity * 100);  // IE8 filter
+    filter: ~"alpha(opacity=@{opacity-ie})";
+    opacity: @opacity;
+}
+
+.user-select(@select) {
+    -webkit-user-select: @select;
+       -moz-user-select: @select;
+        -ms-user-select: @select; // IE10+
+            user-select: @select;
+}
+
+@grid-gutter-width: 30px;
+
+.label-variant(@color) {
+  background-color: @color;
+
+  &[href] {
+    &:hover,
+    &:focus {
+      background-color: darken(@color, 10%);
+    }
+  }
+}
+
+.label-default {
+  .label-variant(@label-default-bg);
+}
+  
+.label-primary {
+  .label-variant(@label-primary-bg);
+}
+
+.label-success {
+  .label-variant(@label-success-bg);
+}
+
+.label-info {
+  .label-variant(@label-info-bg);
+}
+
+.label-warning {
+  .label-variant(@label-warning-bg);
+}
+
+.label-danger {
+  .label-variant(@label-danger-bg);
+}
+
+//** Default label background color
+@label-default-bg:            @gray-light;
+//** Primary label background color
+@label-primary-bg:            @brand-primary;
+//** Success label background color
+@label-success-bg:            @brand-success;
+//** Info label background color
+@label-info-bg:               @brand-info;
+//** Warning label background color
+@label-warning-bg:            @brand-warning;
+//** Danger label background color
+@label-danger-bg:             @brand-danger;
+
+.text-overflow() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Hide URLs next to links when printing (override `bootstrap` rules)
+@media print {
+  a[href]:after {
+      content: none !important;
+  }
+}
+
+/* --------------------------------------------------------
+    Font Face
+-----------------------------------------------------------*/
+.font-face(@family, @name, @weight: 300, @style){
+    @font-face{
+        font-family: @family;
+        src:url('./fonts/@{family}/@{name}.eot');
+        src:url('./fonts/@{family}/@{name}.eot?#iefix') format('embedded-opentype'),
+            url('./fonts/@{family}/@{name}.woff') format('woff'),
+            url('./fonts/@{family}/@{name}.ttf') format('truetype'),
+            url('./fonts/@{family}/@{name}.svg#icon') format('svg');
+        font-weight: @weight;
+        font-style: @style;
+    }
+}
+
+/* --------------------------------------------------------
+    Button Varients
+-----------------------------------------------------------*/
+.button-variant(@color; @background; @border) {
+    color: @color;
+    background-color: @background;
+    border-color: @border;
+  
+    &:hover,
+    &:focus,
+    &.focus,
+    &:active,
+    &.active,
+    .open > .dropdown-toggle& {
+        color: @color;
+        background-color: darken(@background, 2%);
+        border-color: darken(@border, 1%);
+    }
+    &:active,
+    &.active,
+    .open > .dropdown-toggle& {
+      background-image: none;
+    }
+    &.disabled,
+    &[disabled],
+    fieldset[disabled] & {
+        &,
+        &:hover,
+        &:focus,
+        &.focus,
+        &:active,
+        &.active {
+            background-color: @background;
+            border-color: @border;
+        }
+    }
+  
+    .badge {
+        color: @background;
+        background-color: @color;
+    }
+}
+
+
+/* --------------------------------------------------------
+    CSS Transform - Scale and Rotate
+-----------------------------------------------------------*/
+.scale-rotate(@scale, @rotate) {
+    -webkit-transform: scale(@scale) rotate(@rotate);
+    -ms-transform: scale(@scale) rotate(@rotate);
+    -o-transform: scale(@scale) rotate(@rotate);
+    transform: scale(@scale) rotate(@rotate);
+}
+
+
+/* --------------------------------------------------------
+    CSS Animations based on animate.css
+-----------------------------------------------------------*/
+.animated(@name, @duration) {
+    -webkit-animation-name: @name;
+    animation-name: @name;
+    -webkit-animation-duration: @duration;
+    animation-duration: @duration;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}

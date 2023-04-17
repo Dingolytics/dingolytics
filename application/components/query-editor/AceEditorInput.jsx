@@ -1,0 +1,20 @@
+import React, { forwardRef } from "react";
+import AceEditor from "react-ace";
+
+function AceEditorInput(props, ref) {
+  return (
+    <div className="ace-editor-input" data-test={props["data-test"]}>
+      <AceEditor
+        ref={ref}
+        mode="sql"
+        theme="textmate"
+        height="100px"
+        editorProps={{ $blockScrolling: Infinity }}
+        showPrintMargin={false}
+        {...props}
+      />
+    </div>
+  );
+}
+
+export default forwardRef(AceEditorInput);
