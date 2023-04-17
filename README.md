@@ -21,7 +21,7 @@ Credits: check the [`credits`](./credits/) folder.
 License
 -------
 
-This repository contains a forked version of Redash <https://redash.io>,
+This repository contains a forked version of [Redash](https://redash.io),
 which is licensed under the BSD-2-Clause license.
 
 This forked repository includes modifications made by Dingolytics team,
