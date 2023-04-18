@@ -128,15 +128,22 @@ function QueriesList({ controller }) {
           }
         />
         <Layout>
-          <Layout.Sidebar className="m-b-0">
+          <Layout.Sidebar>
             <Sidebar.SearchInput
               placeholder="Search Queries..."
               label="Search queries"
               value={controller.searchTerm}
               onChange={controller.updateSearch}
             />
-            <Sidebar.Menu items={sidebarMenu} selected={controller.params.currentPage} />
-            <Sidebar.Tags url="api/queries/tags" onChange={controller.updateSelectedTags} showUnselectAll />
+            <Sidebar.Menu
+              items={sidebarMenu}
+              selected={controller.params.currentPage}
+            />
+            <Sidebar.Tags
+              url="api/queries/tags"
+              onChange={controller.updateSelectedTags}
+              showUnselectAll
+            />
           </Layout.Sidebar>
           <Layout.Content>
             {controller.isLoaded && controller.isEmpty ? (
@@ -147,7 +154,7 @@ function QueriesList({ controller }) {
               />
             ) : (
               <React.Fragment>
-                <div className={cx({ "m-b-10": areExtraActionsAvailable })}>
+                <div>
                   <ExtraActionsComponent selectedItems={selectedItems} />
                 </div>
                 <div className="bg-white tiled table-responsive">
