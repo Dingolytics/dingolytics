@@ -13,7 +13,7 @@ import Filters from "@/components/general/Filters";
 import { Dashboard } from "@/services/dashboard";
 import routes from "@/services/routes";
 
-import logoUrl from "@/assets/images/redash_icon_small.png";
+import logoUrl from "@/assets/images/icon-80.png";
 
 import useDashboard from "./hooks/useDashboard";
 

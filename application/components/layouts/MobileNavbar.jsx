@@ -8,7 +8,7 @@ import Menu from "antd/lib/menu";
 import Link from "@/components/general/Link";
 import { Auth, currentUser } from "@/services/auth";
 import settingsMenu from "@/services/settingsMenu";
-import logoUrl from "@/assets/images/redash_icon_small.png";
+import logoUrl from "@/assets/images/icon-80.png";
 
 export default function MobileNavbar({ getPopupContainer }) {
   const firstSettingsTab = first(settingsMenu.getAvailableItems());
@@ -57,12 +57,6 @@ export default function MobileNavbar({ getPopupContainer }) {
                 </Menu.Item>
               )}
               {currentUser.hasPermission("super_admin") && <Menu.Divider />}
-              <Menu.Item key="help">
-                {/* eslint-disable-next-line react/jsx-no-target-blank */}
-                <Link href="https://redash.io/help" target="_blank" rel="noopener">
-                  Help
-                </Link>
-              </Menu.Item>
               <Menu.Item key="logout" onClick={() => Auth.logout()}>
                 Log out
               </Menu.Item>

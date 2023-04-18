@@ -8,7 +8,7 @@ import HelpTrigger from "@/components/help/HelpTrigger";
 import { useCurrentRoute } from "@/components/router/Router";
 import { Auth, currentUser } from "@/services/auth";
 import settingsMenu from "@/services/settingsMenu";
-import logoUrl from "@/assets/images/redash_icon_small.png";
+import logoUrl from "@/assets/images/icon-80.png";
 
 import DesktopOutlinedIcon from "@ant-design/icons/DesktopOutlined";
 import CodeOutlinedIcon from "@ant-design/icons/CodeOutlined";
@@ -128,17 +128,6 @@ export default function DesktopNavbar() {
               <SettingOutlinedIcon aria-label="Settings navigation button" />
             )
           )
-        ].filter(Boolean)}
-      />
-
-      <Menu selectable={false} mode="vertical" theme="dark"
-        items={[
-          // { type: 'divider' },
-          getMenuItem(
-            (<HelpTrigger showTooltip={false} type="HOME">Help</HelpTrigger>),
-            "help",
-            <QuestionCircleOutlinedIcon aria-label="Get help button" />
-          ),
         ].filter(Boolean)}
       />
 

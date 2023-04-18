@@ -49,10 +49,10 @@ const getPlugins = (env) => {
           from: "application/assets/css/**/*.css",
           to: "styles/[name][ext]"
         },
-        {
-          from: "application/assets/fonts",
-          to: "fonts/"
-        }
+        // {
+        //   from: "application/assets/fonts",
+        //   to: "fonts/"
+        // }
       ]
     }),
 

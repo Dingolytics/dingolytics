@@ -36,18 +36,18 @@ function requireImages() {
   ctx.keys().forEach(ctx);
 }
 
-function registerExtensions() {
-  const context = require.context("extensions", true, /^((?![\\/.]test[\\./]).)*\.jsx?$/);
-  const modules = context
-    .keys()
-    .map(context)
-    .map(module => module.default);
+// function registerExtensions() {
+//   const context = require.context("extensions", true, /^((?![\\/.]test[\\./]).)*\.jsx?$/);
+//   const modules = context
+//     .keys()
+//     .map(context)
+//     .map(module => module.default);
 
-  return modules
-    .filter(isFunction)
-    .filter(f => f.init)
-    .map(f => f());
-}
+//   return modules
+//     .filter(isFunction)
+//     .filter(f => f.init)
+//     .map(f => f());
+// }
 
 requireImages();
-registerExtensions();
+// registerExtensions();
