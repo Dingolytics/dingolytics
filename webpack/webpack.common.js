@@ -12,7 +12,6 @@ module.exports = {
       import: [
         path.resolve(applicationRoot, "./index.tsx"),
         path.resolve(applicationRoot, "./assets", "./styles.less"),
-        path.resolve(applicationRoot, "./assets", "./less", "./ant.less")
       ],
       dependOn: ["_ace"],
       // TODO: This is not working as-is
