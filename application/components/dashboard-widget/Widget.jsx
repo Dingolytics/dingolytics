@@ -9,8 +9,6 @@ import recordEvent from "@/services/recordEvent";
 import { Moment } from "@/components/proptypes";
 import PlainButton from "@/components/general/PlainButton";
 
-import "./Widget.less";
-
 function WidgetDropdownButton({ extraOptions, showDeleteOption, onDelete }) {
   const WidgetMenu = (
     <Menu data-test="WidgetDropdownButtonMenu">

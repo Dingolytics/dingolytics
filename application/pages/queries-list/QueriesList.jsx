@@ -120,7 +120,7 @@ function QueriesList({ controller }) {
           title={controller.params.pageTitle}
           actions={
             currentUser.hasPermission("create_query") ? (
-              <Link.Button block type="primary" href="queries/new">
+              <Link.Button type="primary" href="queries/new">
                 <i className="fa fa-plus m-r-5" aria-hidden="true" />
                 New Query
               </Link.Button>

@@ -19,8 +19,6 @@ import recordEvent from "@/services/recordEvent";
 import { durationHumanize } from "@/lib/utils";
 import { DashboardStatusEnum } from "../hooks/useDashboard";
 
-import "./DashboardHeader.less";
-
 function getDashboardTags() {
   return getTags("api/dashboards/tags").then(tags => map(tags, t => t.name));
 }

@@ -1,44 +1,30 @@
 /* Top-level defines for styles and mixins */
 @import "./defines";
 
-/* Base styles and general mixins */
-@import "less/common/base";
-@import "less/common/flex";
-@import "less/common/print";
-@import "less/common/generics";
+/* Utility styles and mixins */
+@import "less/utils/base";
+@import "less/utils/flex";
+@import "less/utils/print";
+@import "less/utils/generics";
+@import "less/utils/404";
+@import "less/utils/ie-warning";
 
-/* Errors & warning */
-@import "less/common/404";
-@import "less/common/ie-warning";
+/* Application layout, navigation */
+@import "less/components/application-layout";
+@import "less/components/navbar-desktop";
+@import "less/components/navbar-mobile";
+@import "less/components/dashboard-header";
 
-/* ACE queries editor */
-@import "less/redash/ace-editor";
-@import "less/redash/ace-editor-input";
+/* Queries editor, Ace */
+@import "less/components/ace-editor";
 
-/* Queries, schema browser */
-@import "less/redash/schema-browser";
-@import "less/redash/redash-table";
-@import "less/redash/query";
-@import "less/redash/query-link";
-@import "less/redash/query-api-key-dialog-wrapper";
+/* Query page, schema browser */
+@import "less/components/query";
+@import "less/components/schema-browser";
+@import "less/components/query-api-key-dialog-wrapper";
 
-/* Components */
-@import "less/redash/application-layout";
-@import "less/redash/admin-layout";
-@import "less/redash/navbar-desktop";
-@import "less/redash/navbar-mobile";
-@import "less/redash/cards-list";
-@import "less/redash/add-to-dashboard-dialog";
-@import "less/redash/page-header";
-@import "less/redash/dynamic-button";
-@import "less/redash/dynamic-parameters";
-@import "less/redash/empty-state";
-@import "less/redash/content-with-sidebar";
-@import "less/redash/resizable";
-@import "less/redash/code-block";
-@import "less/redash/plain-button";
-@import "less/redash/permissions-editor-dialog";
-@import "less/redash/user-groups";
-@import "less/redash/parameter-mapping-input";
-@import "less/redash/parameter-value-input";
-@import "less/redash/parameters";
+/* General components */
+@import "less/components/resizable";
+@import "less/components/table";
+@import "less/components/textbox-dialog";
+@import "less/components/widget";

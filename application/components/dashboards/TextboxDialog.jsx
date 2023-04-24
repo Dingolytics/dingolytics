@@ -12,8 +12,6 @@ import HtmlContent from "@redash/vis/components/HtmlContent";
 import { wrap as wrapDialog, DialogPropType } from "@/components/general/DialogWrapper";
 import notification from "@/services/notification";
 
-import "./TextboxDialog.less";
-
 function TextboxDialog({ dialog, isNew, ...props }) {
   const [text, setText] = useState(toString(props.text));
   const [preview, setPreview] = useState(null);
