@@ -9,7 +9,7 @@ on:
 
 jobs:
   run-deploy:
-    if: ${{ vars.USE_PLAYGROUND == '' }}
+    if: ${{ vars.USE_PLAYGROUND == 'true' }}
     runs-on: ubuntu-latest
     env:
       SSH_KEY: ${{ secrets.SSH_PLAYGROUND_KEY }}
