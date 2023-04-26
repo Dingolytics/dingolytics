@@ -1,0 +1,51 @@
+name: Deploy / Playground
+
+on:
+  push:
+    branches:
+      - 'main'
+    paths-ignore:
+      - '**/*.md'
+
+jobs:
+  run-deploy:
+    if: ${{ vars.USE_PLAYGROUND == '' }}
+    runs-on: ubuntu-latest
+    env:
+      SSH_KEY: ${{ secrets.SSH_PLAYGROUND_KEY }}
+      SSH_HOST: ${{ vars.SSH_PLAYGROUND_HOST }}
+      SSH_PORT: ${{ vars.SSH_PLAYGROUND_PORT }}
+      SSH_USER: ${{ vars.SSH_PLAYGROUND_USER }}
+      PROJECT_HOME: ./var/htdocs
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Prepare SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${SSH_KEY}" > ~/.ssh/private.key
+          chmod 600 ~/.ssh/private.key
+          ssh-keyscan -p ${SSH_PORT} -H ${SSH_HOST} >> ~/.ssh/known_hosts
+
+      - name: Set Node.js 18.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          # cache: 'npm'
+
+      - name: Install yarn
+        run: npm install -g yarn
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Build project
+        run: yarn build
+
+      - name: Push built project with rsync
+        run: |
+          rsync -avz --delete --exclude .git/ \
+            -e "ssh -p ${SSH_PORT} -i ~/.ssh/private.key" \
+            ./build/* ${SSH_USER}@${SSH_HOST}:${PROJECT_HOME}

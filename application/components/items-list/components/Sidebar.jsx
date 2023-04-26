@@ -6,9 +6,6 @@ import AntdMenu from "antd/lib/menu";
 import Link from "@/components/general/Link";
 import TagsList from "@/components/tags/TagsList";
 
-/*
-    SearchInput
- */
 
 export function SearchInput({ placeholder, value, showIcon, onChange, label }) {
   const [currentValue, setCurrentValue] = useState(value);
@@ -28,7 +25,7 @@ export function SearchInput({ placeholder, value, showIcon, onChange, label }) {
 
   const InputControl = showIcon ? Input.Search : Input;
   return (
-    <div className="m-b-10">
+    <div>
       <InputControl
         className="form-control"
         placeholder={placeholder}
@@ -64,7 +61,7 @@ export function Menu({ items, selected }) {
     return null;
   }
   return (
-    <div className="m-b-10 tags-list tiled">
+    <div className="m-b-10">
       <AntdMenu className="invert-stripe-position" mode="inline" selectable={false} selectedKeys={[selected]}>
         {map(items, item => (
           <AntdMenu.Item key={item.key} className="m-0">
