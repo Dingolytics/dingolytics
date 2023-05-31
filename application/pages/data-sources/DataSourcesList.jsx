@@ -3,6 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import Button from "antd/lib/button";
+import Space from "antd/lib/space";
 import routeWithUserSession from "@/components/router/routeWithUserSession";
 import navigateTo from "@/components/router/navigateTo";
 import CardsList from "@/components/general/CardsList";
@@ -11,7 +12,7 @@ import CreateSourceDialog from "@/components/settings/CreateSourceDialog";
 import DynamicComponent, { registerComponent } from "@/components/general/DynamicComponent";
 import helper from "@/components/dynamic-form/dynamicFormHelper";
 import wrapSettingsTab from "@/components/settings/SettingsWrapper";
-import PlainButton from "@/components/general/PlainButton";
+import CreateStreamDialog from "@/components/settings/CreateStreamDialog";
 
 import DataSource, { IMG_ROOT } from "@/services/data-source";
 import { policy } from "@/services/policy";
@@ -28,14 +29,6 @@ export function DataSourcesListComponent({ dataSources, onClickCreate }) {
   return isEmpty(dataSources) ? (
     <div className="text-center">
       There are no data sources yet.
-      {policy.isCreateDataSourceEnabled() && (
-        <div className="m-t-5">
-          <PlainButton type="link" onClick={onClickCreate} data-test="CreateDataSourceLink">
-            Click here
-          </PlainButton>{" "}
-          to add one.
-        </div>
-      )}
     </div>
   ) : (
     <CardsList items={items} />
@@ -106,6 +99,7 @@ class DataSourcesList extends React.Component {
 
   showCreateSourceDialog = () => {
     recordEvent("view", "page", "data-sources/new");
+
     this.newDataSourceDialog = CreateSourceDialog.showModal({
       types: reject(this.state.dataSourceTypes, "deprecated"),
       sourceType: "Data Source",
@@ -137,13 +131,24 @@ class DataSourcesList extends React.Component {
 
     return (
       <div>
-        <div className="m-b-15">
+        <Space>
           <Button {...newDataSourceProps}>
-            <i className="fa fa-plus m-r-5" aria-hidden="true" />
-            New Data Source
+            Connect a Database
           </Button>
+
+          <Button
+            type="default"
+            onClick={() => {
+              CreateStreamDialog.showModal({
+              });
+            }}
+          >
+            Add Stream
+          </Button>
+
           <DynamicComponent name="DataSourcesListExtra" />
-        </div>
+        </Space>
+
         {this.state.loading ? (
           <LoadingState className="" />
         ) : (
