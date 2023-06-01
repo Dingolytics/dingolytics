@@ -16,7 +16,6 @@ const CreateGroupDialog: React.FC<CreateDialogProps> = ({ dialog }) => {
       onOk={() => save()}
     >
       <Input
-        className="form-control"
         value={name}
         onChange={(event) => setName(event.target.value)}
         onPressEnter={() => save()}
