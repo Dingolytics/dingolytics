@@ -1,12 +1,16 @@
 import { isEmpty, reject } from "@lodash";
-import React from "react";
-import PropTypes from "prop-types";
+import { Component, ReactElement } from "react";
+import { Button, Space, Table, Image, Col, Row, Divider } from "antd";
+import type { ColumnsType } from "antd/es/table";
 
-import Button from "antd/lib/button";
-import Space from "antd/lib/space";
+import DataSource, { IMG_ROOT } from "@/services/data-source";
+import { policy } from "@/services/policy";
+import recordEvent from "@/services/recordEvent";
+import routes from "@/services/routes";
+
+import Link from "@/components/general/Link";
 import routeWithUserSession from "@/components/router/routeWithUserSession";
 import navigateTo from "@/components/router/navigateTo";
-import CardsList from "@/components/general/CardsList";
 import LoadingState from "@/components/items-list/components/LoadingState";
 import CreateSourceDialog from "@/components/settings/CreateSourceDialog";
 import DynamicComponent, { registerComponent } from "@/components/general/DynamicComponent";
@@ -14,13 +18,46 @@ import helper from "@/components/dynamic-form/dynamicFormHelper";
 import wrapSettingsTab from "@/components/settings/SettingsWrapper";
 import CreateStreamDialog from "@/components/settings/CreateStreamDialog";
 
-import DataSource, { IMG_ROOT } from "@/services/data-source";
-import { policy } from "@/services/policy";
-import recordEvent from "@/services/recordEvent";
-import routes from "@/services/routes";
+interface DataSourcesListComponentProps {
+  dataSources: any[];
+}
 
-export function DataSourcesListComponent({ dataSources, onClickCreate }) {
-  const items = dataSources.map(dataSource => ({
+interface DataSourcesListProps {
+  isNewDataSourcePage?: boolean;
+  onError?: (error: Error) => void;
+}
+
+interface DataSourcesListState {
+  dataSourceTypes: any[];
+  dataSources: any[];
+  loading: boolean;
+}
+
+interface DataType {
+  title: string;
+  imgSrc: string;
+  href: string;
+}
+
+const columns: ColumnsType<DataType> = [
+  {
+    title: "Name",
+    dataIndex: "title",
+    key: "title",
+    render: (_, item) => (
+      <Space><Image src={item.imgSrc} /> {item.title}</Space>
+    ),
+  },
+  {
+    title: "Settings",
+    dataIndex: 'href',
+    key: 'href',
+    render: (value) => <Link href={value}>Settings</Link>,
+  }
+]
+
+function DataSourcesListComponent({ dataSources }: DataSourcesListComponentProps): ReactElement {
+  const items = dataSources.map((dataSource) => ({
     title: dataSource.name,
     imgSrc: `${IMG_ROOT}/${dataSource.type}.png`,
     href: `data-sources/${dataSource.id}`,
@@ -31,34 +68,31 @@ export function DataSourcesListComponent({ dataSources, onClickCreate }) {
       There are no data sources yet.
     </div>
   ) : (
-    <CardsList items={items} />
+    <Table
+      columns={columns}
+      dataSource={items}
+      pagination={false}
+      showHeader={false}
+      size="middle"
+      bordered
+    />
   );
 }
 
 registerComponent("DataSourcesListComponent", DataSourcesListComponent);
 
-class DataSourcesList extends React.Component {
-  static propTypes = {
-    isNewDataSourcePage: PropTypes.bool,
-    onError: PropTypes.func,
-  };
-
-  static defaultProps = {
-    isNewDataSourcePage: false,
-    onError: () => {},
-  };
-
-  state = {
+class DataSourcesList extends Component<DataSourcesListProps, DataSourcesListState> {
+  state: DataSourcesListState = {
     dataSourceTypes: [],
     dataSources: [],
     loading: true,
   };
 
-  newDataSourceDialog = null;
+  private newDataSourceDialog: any = null;
 
   componentDidMount() {
     Promise.all([DataSource.query(), DataSource.types()])
-      .then(values =>
+      .then((values) =>
         this.setState(
           {
             dataSources: values[0],
@@ -77,7 +111,7 @@ class DataSourcesList extends React.Component {
           }
         )
       )
-      .catch(error => this.props.onError(error));
+      .catch((error) => this.props.onError?.(error));
   }
 
   componentWillUnmount() {
@@ -86,13 +120,15 @@ class DataSourcesList extends React.Component {
     }
   }
 
-  createDataSource = (selectedType, values) => {
+  createDataSource = (selectedType: any, values: any): Promise<any> => {
     const target = { options: {}, type: selectedType.type };
     helper.updateTargetWithValues(target, values);
-
-    return DataSource.create(target).then(dataSource => {
+    return DataSource.create(target).then((dataSource) => {
       this.setState({ loading: true });
-      DataSource.query().then(dataSources => this.setState({ dataSources, loading: false }));
+      DataSource.query()
+        .then((dataSources) => this.setState(
+          { dataSources, loading: false }
+        ));
       return dataSource;
     });
   };
@@ -109,7 +145,7 @@ class DataSourcesList extends React.Component {
     });
 
     this.newDataSourceDialog
-      .onClose((result = {}) => {
+      .onClose((result = {success: false, data: {id: null}}) => {
         this.newDataSourceDialog = null;
         if (result.success) {
           navigateTo(`data-sources/${result.data.id}`);
@@ -123,19 +159,32 @@ class DataSourcesList extends React.Component {
 
   render() {
     const newDataSourceProps = {
-      type: "primary",
-      onClick: policy.isCreateDataSourceEnabled() ? this.showCreateSourceDialog : null,
+      onClick: policy.isCreateDataSourceEnabled() ? this.showCreateSourceDialog : undefined,
       disabled: !policy.isCreateDataSourceEnabled(),
       "data-test": "CreateDataSourceButton",
     };
 
     return (
       <div>
+        {
+          this.state.loading ? (
+            <LoadingState className="" />
+          ) : (
+            <Row>
+              <Col span={24} lg={{span: 16}}>
+                <DynamicComponent
+                  name="DataSourcesListComponent"
+                  dataSources={this.state.dataSources}
+                />
+              </Col>
+            </Row>
+          )
+        }
+        <br />
         <Space>
-          <Button {...newDataSourceProps}>
+          <Button type="primary" {...newDataSourceProps}>
             Connect a Database
           </Button>
-
           <Button
             type="default"
             onClick={() => {
@@ -148,16 +197,6 @@ class DataSourcesList extends React.Component {
 
           <DynamicComponent name="DataSourcesListExtra" />
         </Space>
-
-        {this.state.loading ? (
-          <LoadingState className="" />
-        ) : (
-          <DynamicComponent
-            name="DataSourcesListComponent"
-            dataSources={this.state.dataSources}
-            onClickCreate={this.showCreateSourceDialog}
-          />
-        )}
       </div>
     );
   }
@@ -179,14 +218,15 @@ routes.register(
   routeWithUserSession({
     path: "/data-sources",
     title: "Data Sources",
-    render: pageProps => <DataSourcesListPage {...pageProps} />,
+    render: (pageProps) => <DataSourcesListPage {...pageProps} />,
   })
 );
+
 routes.register(
   "DataSources.New",
   routeWithUserSession({
     path: "/data-sources/new",
     title: "Data Sources",
-    render: pageProps => <DataSourcesListPage {...pageProps} isNewDataSourcePage />,
+    render: (pageProps) => <DataSourcesListPage {...pageProps} isNewDataSourcePage />,
   })
 );

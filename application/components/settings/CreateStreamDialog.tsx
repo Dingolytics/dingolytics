@@ -1,11 +1,10 @@
-import { map, kebabCase } from "@lodash";
+import { map } from "@lodash";
 import { useState, useEffect } from "react";
 import {
   Modal, Form, Input, Select, Typography
 } from "antd";
 import {
-  CreateDialogProps, DialogProps,
-  wrap as wrapDialog
+  CreateDialogProps, wrap as wrapDialog
 } from "@/components/general/DialogWrapper";
 import { autoTableName } from "@/lib/utils";
 import DataSource from "@/services/data-source";
