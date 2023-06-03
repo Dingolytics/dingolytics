@@ -165,7 +165,6 @@ function openDialog(
     dialog.props.cancelButtonProps = { disabled: true };
     setAdditionalDialogProps();
     render();
-
     return Promise.resolve(result)
       .then(() => {
         dialog.props.visible = false;

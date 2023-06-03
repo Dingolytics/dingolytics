@@ -1,15 +1,18 @@
 import { map } from "@lodash";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
-  Modal, Form, Input, Select, Typography
+  Modal, Form, Input, Select, Typography, Button
 } from "antd";
+import type { FormInstance } from 'antd/es/form';
+const { Paragraph, Text } = Typography;
+
+import { autoTableName } from "@/lib/utils";
+import DataSource from "@/services/data-source";
+import Stream, { StreamType } from "@/services/stream";
+
 import {
   CreateDialogProps, wrap as wrapDialog
 } from "@/components/general/DialogWrapper";
-import { autoTableName } from "@/lib/utils";
-import DataSource from "@/services/data-source";
-
-const { Paragraph, Text } = Typography;
 
 // TODO: Load schema options from server
 const TABLE_SCHEMA_OPTIONS = [
@@ -19,9 +22,10 @@ const TABLE_SCHEMA_OPTIONS = [
 ]
 
 const CreateStreamDialog: React.FC<CreateDialogProps> = ({ dialog }) => {
-  const [dataSourceOptions, setDataSourceOptions] = useState<any[]>([]);
+  const [form] = Form.useForm();
+  const [data_source_options, setDataSourceOptions] = useState<any[]>([]);
+  const [data_source_id, setDataSourceId] = useState<number>();
   const [name, setName] = useState("");
-  const [data_source_id, setDataSourceId] = useState("");
   const [db_table, setDbTable] = useState("");
   const [db_table_preset, setDbTablePreset] = useState("");
 
@@ -38,16 +42,23 @@ const CreateStreamDialog: React.FC<CreateDialogProps> = ({ dialog }) => {
     });
   }, []);
   
-  const sumbitCreateStream = (data: any) => {
-    console.log("submitCreateStream", data);
-    dialog.close(data);
+  const sumbitCreateStream = (data: StreamType) => {
+    form.validateFields().then((values) => {
+      Stream.create(data)
+        .then((stream) => {
+          dialog.close({success: true, data: stream});
+        })
+        .catch((error) => {
+          dialog.close({success: false});
+        });
+    })
   };
 
   return (
     <Modal title="Create a New Data Stream" {...dialog.props}
       onOk={
         () => sumbitCreateStream({
-          data_source_id, name, db_table, db_table_preset
+          name, data_source_id, db_table, db_table_preset
         })
       }
     >
@@ -56,15 +67,17 @@ const CreateStreamDialog: React.FC<CreateDialogProps> = ({ dialog }) => {
         from arbitrary source to a destination table.
       </Paragraph>
       <Form
+        form={form}
         layout="horizontal"
         labelCol={{ span: 6 }}
         wrapperCol={{ span: 18 }}
+        scrollToFirstError={true}
       >
         <Form.Item label="Data source" required={true}>
           <Select
             showSearch
             placeholder="Search by name..."
-            options={dataSourceOptions}
+            options={data_source_options}
             value={data_source_id}
             onChange={(value) => setDataSourceId(value)}
           />
