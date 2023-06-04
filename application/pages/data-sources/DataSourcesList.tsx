@@ -43,12 +43,13 @@ const databasesColumns: ColumnsType<DataSourceType> = [
     title: "Name",
     dataIndex: "name",
     key: "name",
+    width: "75%",
     render: (_, item) => (
       <DatabaseItem item={item} text={{strong: true}} />
     ),
   },
   {
-    title: "Settings",
+    title: "Actions",
     dataIndex: "id",
     key: "id",
     render: (value) => (

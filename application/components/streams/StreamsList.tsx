@@ -1,6 +1,7 @@
 import { isEmpty } from "@lodash";
 import React from "react";
-import { Space, Table, Typography } from "antd";
+import { Space, Table, Typography, Dropdown } from "antd";
+import DownOutlinedIcon from "@ant-design/icons/DownCircleOutlined";
 import type { ColumnsType } from "antd/es/table";
 const { Text } = Typography;
 
@@ -8,6 +9,7 @@ import { DataSourceType } from "@/services/data-source";
 import { StreamType } from "@/services/stream";
 import DatabaseItem from "@/components/databases/DatabaseItem";
 import InputWithCopy from "@/components/general/InputWithCopy";
+import navigateTo from "@/components/router/navigateTo";
 
 type ListComponentProps = {
   items: any[];
@@ -22,17 +24,30 @@ const groupColumns: ColumnsType<DataSourceType> = [
   },
 ]
 
+const settingsDropdownProps = {
+  items: [
+    {
+      label: "Stop",
+      key: "stop",
+      danger: true,
+    }
+  ],
+  onClick: (item: object) => console.log(item),
+};
+
 const streamsColumns: ColumnsType<StreamType> = [
   {
     title: "Name",
     dataIndex: "name",
     key: "name",
     render: (_, item) => <Text strong>{item.name}</Text>,
+    "width": "35%",
   },
   {
     title: "Table name",
     dataIndex: "db_table",
     key: "db_table",
+    "width": "40%",
     render: (_, item) => (
       <Space.Compact>
         <InputWithCopy value={item.db_table} readOnly />
@@ -40,10 +55,21 @@ const streamsColumns: ColumnsType<StreamType> = [
     ),
   },
   {
-    title: "Schema",
-    dataIndex: "db_table_preset",
-    key: "db_table_preset"
-  },
+    title: "",
+    dataIndex: "id",
+    key: "id",
+    "width": "25%",
+    render: (value) => (
+      <Dropdown.Button
+        type="text"
+        menu={settingsDropdownProps}
+        onClick={() => navigateTo(`streams/${value}`)}
+        icon={<DownOutlinedIcon />}
+      >
+        Settings
+      </Dropdown.Button>
+    )
+  }
 ]
 
 const StreamsList: React.FC<ListComponentProps> = ({ items }) =>
@@ -56,9 +82,7 @@ const StreamsList: React.FC<ListComponentProps> = ({ items }) =>
       rowKey={(item) => item.id}
       dataSource={items}
       pagination={false}
-      // showHeader={false}
       size="middle"
-      // bordered
     />
   );
 }
