@@ -1,5 +1,6 @@
-import classNames from "classnames";
 import React from "react";
+import { Typography } from "antd";
+const { Text } = Typography;
 
 export interface PlainButtonProps extends
 Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "type"> {
@@ -8,19 +9,8 @@ Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "type"> {
 
 function PlainButton({ className, type, ...rest }: PlainButtonProps) {
   return (
-    <button
-      className={
-        classNames(
-          "plain-button",
-          "clickable",
-          { "plain-button-link": type === "link" },
-          className
-        )
-      }
-      type="button"
-      {...rest}
-    />
-  );
+    <Text className="clickable" {...rest} />
+  )
 }
 
 export default PlainButton;

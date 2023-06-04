@@ -1,12 +1,13 @@
 import { isEmpty } from "@lodash";
 import React from "react";
-import { Table, Typography } from "antd";
+import { Space, Table, Typography } from "antd";
 import type { ColumnsType } from "antd/es/table";
 const { Text } = Typography;
 
 import { DataSourceType } from "@/services/data-source";
 import { StreamType } from "@/services/stream";
 import DatabaseItem from "@/components/databases/DatabaseItem";
+import InputWithCopy from "@/components/general/InputWithCopy";
 
 type ListComponentProps = {
   items: any[];
@@ -25,12 +26,18 @@ const streamsColumns: ColumnsType<StreamType> = [
   {
     title: "Name",
     dataIndex: "name",
-    key: "name"
+    key: "name",
+    render: (_, item) => <Text strong>{item.name}</Text>,
   },
   {
     title: "Table name",
     dataIndex: "db_table",
-    key: "db_table"
+    key: "db_table",
+    render: (_, item) => (
+      <Space.Compact>
+        <InputWithCopy value={item.db_table} readOnly />
+      </Space.Compact>
+    ),
   },
   {
     title: "Schema",

@@ -7,7 +7,8 @@ import PlainButton from "@/components/general/PlainButton";
 interface Props extends React.ComponentProps<typeof Input> {}
 
 const InputWithCopy: React.FC<Props> = (props) => {
-  const [copied, setCopied] = useState<string | null>(null);
+  const [tooltipColor, setTooltipColor] = useState<string>("black");
+  const [tooltip, setTooltip] = useState<string | null>(null);
   const inputRef = useRef<InputRef>(null);
   const resetCopyStateRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const copyFeatureSupported = Boolean(
@@ -27,16 +28,20 @@ const InputWithCopy: React.FC<Props> = (props) => {
 
     try {
       await navigator.clipboard?.writeText(inputRef.current.input.value);
-      setCopied("Copied!");
+      setTooltip("Saved to clipboard");
+      setTooltipColor("green");
     } catch (err) {
-      setCopied("Copy failed");
+      setTooltip("Copy failed");
+      setTooltipColor("red");
     }
-
-    resetCopyStateRef.current = setTimeout(() => setCopied(null), 2000);
+    resetCopyStateRef.current = setTimeout(() => {
+      setTooltip(null);
+      setTooltipColor("black");
+    }, 2000);
   };
 
   const copyButton = (
-    <Tooltip title={copied || "Copy"}>
+    <Tooltip title={tooltip || "Copy"} color={tooltipColor}>
       <PlainButton onClick={copy}>
         <CopyOutlinedIcon />
       </PlainButton>

@@ -38,11 +38,10 @@ React.Component<CodeBlockProps, CodeBlockState> {
     if (text) {
       try {
         await navigator.clipboard.writeText(text);
-        this.setState({ copied: "Copied!" });
+        this.setState({ copied: "Copied" });
       } catch (err) {
         this.setState({ copied: "Copy failed" });
       }
-  
       this.resetCopyState = setTimeout(
         () => this.setState({ copied: null }), 2000
       );  
