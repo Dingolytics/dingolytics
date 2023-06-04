@@ -1,24 +1,35 @@
 import { has, map, isObject } from "@lodash";
 import { axios } from "@/services/axios";
 import { fetchDataFromJob } from "@/services/query-result";
+import { StreamType } from "@/services/stream";
 
 export const SCHEMA_NOT_SUPPORTED = 1;
 export const SCHEMA_LOAD_ERROR = 2;
 export const IMG_ROOT = "static/images/db-logos";
 
-function mapSchemaColumnsToObject(columns) {
-  return map(columns, column => (isObject(column) ? column : { name: column }));
-}
+type ColumnType = object | string;
 
 type IdType = {
   readonly id: number;
 }
 
-export type DataSourceType = {
+type DataSourceType = {
   readonly id?: number;
   name: string;
   type: string;
-  options?: any;
+  options?: object;
+  streams?: StreamType[];
+}
+
+type JobType = {
+  readonly id: number;
+  error?: string;
+}
+
+type SchemaType = {
+  readonly name: string;
+  job?: JobType;
+  schema?: object;
 }
 
 const DataSource = {
@@ -36,23 +47,44 @@ const DataSource = {
     axios.post(`api/data_sources/${data.id}/test`),
   delete: ({ id }: IdType): Promise<IdType> =>
     axios.delete(`api/data_sources/${id}`),
+
   fetchSchema: (data: DataSourceType, refresh = false) => {
     let params = refresh ? {refresh: true} : {};
-    return axios
-      .get(`api/data_sources/${data.id}/schema`, { params })
+
+    const getSchema = (): Promise<SchemaType> =>
+      axios.get(`api/data_sources/${data.id}/schema`, { params });
+
+    const mapColumns = (columns: ColumnType[]) =>
+      map(columns, column => (isObject(column) ? column : { name: column }));
+
+    return getSchema()
       .then((data) => {
         if (has(data, "job")) {
-          return fetchDataFromJob(data.job.id).catch(error =>
-            error.code === SCHEMA_NOT_SUPPORTED ? [] : Promise.reject(new Error(data.job.error))
+          return fetchDataFromJob(data.job!.id).catch((error: any) =>
+            error.code === SCHEMA_NOT_SUPPORTED ?
+            [] :
+            Promise.reject(new Error(data.job!.error))
           );
         }
         return has(data, "schema") ? data.schema : Promise.reject();
       })
       .then((tables) => map(
         tables, (table) => 
-          ({ ...table, columns: mapSchemaColumnsToObject(table.columns) })
+          ({ ...table, columns: mapColumns(table.columns) })
         ));
   },
 };
+
+const annotateWithStreams = (databases: DataSourceType[], streams: StreamType[]) => {
+  for (const database of databases) {
+    database.streams = streams.filter(
+      stream => stream.data_source_id === database.id
+    );
+  }
+}
+
+export type { DataSourceType };
+
+export { annotateWithStreams };
 
 export default DataSource;

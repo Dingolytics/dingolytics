@@ -1,10 +1,11 @@
 import { isEmpty, reject } from "@lodash";
-import { Component } from "react";
+import React, { Component } from "react";
 import { Button, Space, Table, Image, Col, Row, Typography } from "antd";
 import type { ColumnsType } from "antd/es/table";
 const { Title, Text } = Typography;
 
-import DataSource, { IMG_ROOT } from "@/services/data-source";
+import DataSource from "@/services/data-source";
+import { annotateWithStreams, IMG_ROOT } from "@/services/data-source";
 import Stream, { StreamType } from "@/services/stream";
 import { policy } from "@/services/policy";
 import recordEvent from "@/services/recordEvent";
@@ -18,6 +19,7 @@ import CreateSourceDialog from "@/components/settings/CreateSourceDialog";
 import helper from "@/components/dynamic-form/dynamicFormHelper";
 import wrapSettingsTab from "@/components/settings/SettingsWrapper";
 import CreateStreamDialog from "@/components/settings/CreateStreamDialog";
+import { GrouppedStreamsList} from "@/components/streams/StreamsList";
 
 type ListComponentProps = {
   items: any[];
@@ -58,14 +60,6 @@ const databasesColumns: ColumnsType<DatabasesListItem> = [
   }
 ]
 
-const streamsColumns: ColumnsType<StreamType> = [
-  {
-    title: "Name",
-    dataIndex: "name",
-    key: "name"
-  }
-]
-
 const DatabasesListComponent: React.FC<ListComponentProps> = ({ items }) =>
 {
   items = items.map((dataSource) => ({
@@ -80,23 +74,6 @@ const DatabasesListComponent: React.FC<ListComponentProps> = ({ items }) =>
     <Table
       columns={databasesColumns}
       rowKey={(item) => item.href}
-      dataSource={items}
-      pagination={false}
-      showHeader={false}
-      size="middle"
-      bordered
-    />
-  );
-}
-
-const StreamsListComponent: React.FC<ListComponentProps> = ({ items }) =>
-{
-  return isEmpty(items) ? (
-    <Text>There are no streams configured yet.</Text>
-  ) : (
-    <Table
-      columns={streamsColumns}
-      rowKey={(item) => item.id}
       dataSource={items}
       pagination={false}
       showHeader={false}
@@ -134,14 +111,11 @@ class DataSourcesList extends Component<DatabasesListProps, DatabasesListState> 
 
   reloadState = () => {
     Promise.all([DataSource.query(), DataSource.types(), Stream.query()])
-      .then((values) =>
+      .then((values) => {
+        let [dataSources, dataSourceTypes, streams] = values;
+        annotateWithStreams(dataSources, streams);
         this.setState(
-          {
-            dataSources: values[0],
-            dataSourceTypes: values[1],
-            streams: values[2],
-            loading: false,
-          },
+          { dataSources, dataSourceTypes, streams, loading: false },
           () => {
             if (this.props.isNewDataSourcePage) {
               if (policy.canCreateDataSource()) {
@@ -152,7 +126,7 @@ class DataSourcesList extends Component<DatabasesListProps, DatabasesListState> 
             }
           }
         )
-      )
+      })
       .catch((error) => this.props.onError?.(error));
   }
 
@@ -251,8 +225,8 @@ class DataSourcesList extends Component<DatabasesListProps, DatabasesListState> 
           ) : (
             <Row>
               <Col span={24} lg={{span: 16}}>
-                <StreamsListComponent
-                  items={this.state.streams}
+                <GrouppedStreamsList
+                  items={this.state.dataSources}
                 />
               </Col>
             </Row>
