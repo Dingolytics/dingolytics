@@ -27,6 +27,16 @@ const streamsColumns: ColumnsType<StreamType> = [
     dataIndex: "name",
     key: "name"
   },
+  {
+    title: "Table name",
+    dataIndex: "db_table",
+    key: "db_table"
+  },
+  {
+    title: "Schema",
+    dataIndex: "db_table_preset",
+    key: "db_table_preset"
+  },
 ]
 
 const StreamsList: React.FC<ListComponentProps> = ({ items }) =>

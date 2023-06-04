@@ -4,7 +4,7 @@ import { Button, Space, Table, Image, Col, Row, Typography } from "antd";
 import type { ColumnsType } from "antd/es/table";
 const { Title, Text } = Typography;
 
-import DataSource from "@/services/data-source";
+import DataSource, { DataSourceType } from "@/services/data-source";
 import { annotateWithStreams, IMG_ROOT } from "@/services/data-source";
 import Stream, { StreamType } from "@/services/stream";
 import { policy } from "@/services/policy";
@@ -20,54 +20,45 @@ import helper from "@/components/dynamic-form/dynamicFormHelper";
 import wrapSettingsTab from "@/components/settings/SettingsWrapper";
 import CreateStreamDialog from "@/components/settings/CreateStreamDialog";
 import { GrouppedStreamsList} from "@/components/streams/StreamsList";
+import DatabaseItem from "@/components/databases/DatabaseItem";
 
 type ListComponentProps = {
   items: any[];
 }
 
-type DatabasesListProps = {
+type DataSourcesPageProps = {
   isNewDataSourcePage?: boolean;
   onError?: (error: Error) => void;
 }
 
-type DatabasesListState = {
+type DataSourcesPageState = {
   dataSourceTypes: any[];
   dataSources: any[];
   streams: StreamType[];
   loading: boolean;
 }
 
-type DatabasesListItem = {
-  title: string;
-  imgSrc: string;
-  href: string;
-}
-
-const databasesColumns: ColumnsType<DatabasesListItem> = [
+const databasesColumns: ColumnsType<DataSourceType> = [
   {
     title: "Name",
-    dataIndex: "title",
-    key: "title",
+    dataIndex: "name",
+    key: "name",
     render: (_, item) => (
-      <Space><Image src={item.imgSrc} /> {item.title}</Space>
+      <DatabaseItem item={item} text={{strong: true}} />
     ),
   },
   {
     title: "Settings",
-    dataIndex: "href",
-    key: "href",
-    render: (value) => <Link href={value}>Settings</Link>,
+    dataIndex: "id",
+    key: "id",
+    render: (value) => (
+      <Link href={`data-sources/${value}`}>Settings</Link>
+    ),
   }
 ]
 
 const DatabasesListComponent: React.FC<ListComponentProps> = ({ items }) =>
 {
-  items = items.map((dataSource) => ({
-    title: dataSource.name,
-    imgSrc: `${IMG_ROOT}/${dataSource.type}.png`,
-    href: `data-sources/${dataSource.id}`,
-  }));
-
   return isEmpty(items) ? (
     <Text>There are no databases connected yet.</Text>
   ) : (
@@ -83,8 +74,8 @@ const DatabasesListComponent: React.FC<ListComponentProps> = ({ items }) =>
   );
 }
 
-class DataSourcesList extends Component<DatabasesListProps, DatabasesListState> {
-  state: DatabasesListState = {
+class DataSourcesList extends Component<DataSourcesPageProps, DataSourcesPageState> {
+  state: DataSourcesPageState = {
     dataSourceTypes: [],
     dataSources: [],
     streams: [],
