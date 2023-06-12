@@ -1,6 +1,6 @@
 import { isEmpty, reject } from "@lodash";
 import React, { Component } from "react";
-import { Button, Space, Table, Image, Col, Row, Typography } from "antd";
+import { Button, Space, Table, Col, Row, Typography } from "antd";
 import type { ColumnsType } from "antd/es/table";
 const { Title, Text } = Typography;
 
@@ -18,7 +18,7 @@ import LoadingState from "@/components/items-list/components/LoadingState";
 import CreateSourceDialog from "@/components/settings/CreateSourceDialog";
 import helper from "@/components/dynamic-form/dynamicFormHelper";
 import wrapSettingsTab from "@/components/settings/SettingsWrapper";
-import CreateStreamDialog from "@/components/settings/CreateStreamDialog";
+import CreateStreamDialog from "@/components/streams/CreateStreamDialog";
 import { GrouppedStreamsList} from "@/components/streams/StreamsList";
 import DatabaseItem from "@/components/databases/DatabaseItem";
 
@@ -43,17 +43,12 @@ const databasesColumns: ColumnsType<DataSourceType> = [
     title: "Name",
     dataIndex: "name",
     key: "name",
-    width: "75%",
     render: (_, item) => (
-      <DatabaseItem item={item} text={{strong: true}} />
-    ),
-  },
-  {
-    title: "Actions",
-    dataIndex: "id",
-    key: "id",
-    render: (value) => (
-      <Link href={`data-sources/${value}`}>Settings</Link>
+      <div className="clickable"
+        onClick={() => navigateTo(`data-sources/${item.id}`)}
+      >
+        <DatabaseItem item={item} text={{strong: true}}/>
+      </div>
     ),
   }
 ]
@@ -65,7 +60,7 @@ const DatabasesListComponent: React.FC<ListComponentProps> = ({ items }) =>
   ) : (
     <Table
       columns={databasesColumns}
-      rowKey={(item) => item.href}
+      rowKey={(item) => item.id}
       dataSource={items}
       pagination={false}
       showHeader={false}

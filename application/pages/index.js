@@ -13,6 +13,7 @@ import "./dashboards/PublicDashboardPage";
 
 import "./data-sources/DataSourcesList";
 import "./data-sources/EditDataSource";
+import "./data-sources/EditStream";
 
 import "./destinations/DestinationsList";
 import "./destinations/EditDestination";

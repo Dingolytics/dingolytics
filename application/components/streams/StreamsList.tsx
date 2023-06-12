@@ -1,7 +1,8 @@
 import { isEmpty } from "@lodash";
 import React from "react";
-import { Space, Table, Typography, Dropdown } from "antd";
-import DownOutlinedIcon from "@ant-design/icons/DownCircleOutlined";
+import { Space, Table, Typography, Button } from "antd";
+// import { Dropdown } from "antd";
+// import DownOutlinedIcon from "@ant-design/icons/DownCircleOutlined";
 import type { ColumnsType } from "antd/es/table";
 const { Text } = Typography;
 
@@ -21,7 +22,7 @@ const groupColumns: ColumnsType<DataSourceType> = [
     dataIndex: "name",
     key: "name",
     render: (_, item) => <DatabaseItem item={item} text={{strong: true}} />,
-  },
+  }
 ]
 
 const settingsDropdownProps = {
@@ -59,15 +60,15 @@ const streamsColumns: ColumnsType<StreamType> = [
     dataIndex: "id",
     key: "id",
     "width": "25%",
-    render: (value) => (
-      <Dropdown.Button
+    render: (_, item) => (
+      <Button
         type="text"
-        menu={settingsDropdownProps}
-        onClick={() => navigateTo(`streams/${value}`)}
-        icon={<DownOutlinedIcon />}
+        // menu={settingsDropdownProps}
+        onClick={() => navigateTo(`data-sources/streams/${item.id}`)}
+        // icon={<DownOutlinedIcon />}
       >
         Settings
-      </Dropdown.Button>
+      </Button>
     )
   }
 ]
@@ -108,7 +109,7 @@ const GrouppedStreamsList: React.FC<ListComponentProps> = ({ items }) =>
       }}
       showHeader={false}
       size="middle"
-      bordered
+      // bordered
     />
   );
 }

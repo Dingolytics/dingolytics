@@ -8,6 +8,8 @@ export type StreamType = {
   readonly id?: number;
   name: string;
   db_table: string;
+  ingest_key?: string;
+  ingest_url?: string;
   db_table_preset?: string;
   data_source?: any;
   data_source_id?: number;
