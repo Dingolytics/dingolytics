@@ -48,7 +48,7 @@ class GroupDataSources extends React.Component {
     {
       key: "datasources",
       href: `groups/${this.groupId}/data-sources`,
-      title: "Data Sources",
+      title: "Databases",
       isAvailable: () => currentUser.isAdmin,
     },
   ];

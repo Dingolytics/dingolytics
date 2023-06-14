@@ -11,7 +11,7 @@ import {
     findKey, chunk, toPairs, debounce, truncate, zipObject, uniqBy,
     join, invoke, omitBy, without, upperFirst, orderBy, noop, toLower,
     reject, isMatch, replace, head, template, partition, cloneDeep,
-    defaults, trimEnd, flatMap
+    defaults, trimEnd, flatMap, kebabCase
 } from "lodash"
 
 export {
@@ -27,5 +27,5 @@ export {
     findKey, chunk, toPairs, debounce, truncate, zipObject, uniqBy,
     join, invoke, omitBy, without, upperFirst, orderBy, noop, toLower,
     reject, isMatch, replace, head, template, partition, cloneDeep,
-    defaults, trimEnd, flatMap
+    defaults, trimEnd, flatMap, kebabCase
 }

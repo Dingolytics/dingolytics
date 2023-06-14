@@ -147,7 +147,7 @@ routes.register(
   "DataSources.Edit",
   routeWithUserSession({
     path: "/data-sources/:dataSourceId",
-    title: "Data Sources",
+    title: "Databases",
     render: pageProps => <EditDataSourcePage {...pageProps} />,
   })
 );
