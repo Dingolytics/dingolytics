@@ -7,12 +7,14 @@ type IdType = {
 export type StreamType = {
   readonly id?: number;
   name: string;
-  db_table: string;
-  ingest_key?: string;
-  ingest_url?: string;
-  db_table_preset?: string;
   data_source?: any;
   data_source_id?: number;
+  db_table: string;
+  db_table_preset?: string;
+  db_table_query?: string;
+  ingest_key?: string;
+  ingest_url?: string;
+  ingest_example?: any;
 }
 
 export const Stream = {

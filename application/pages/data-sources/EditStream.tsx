@@ -1,5 +1,6 @@
 import React from "react";
-import { Col, Row, Table } from "antd";
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { Col, Row, Table, Typography } from "antd";
 // import Modal from "antd/lib/modal";
 import routeWithUserSession from "@/components/router/routeWithUserSession";
 // import navigateTo from "@/components/router/navigateTo";
@@ -8,6 +9,8 @@ import LoadingState from "@/components/items-list/components/LoadingState";
 import wrapSettingsTab from "@/components/settings/SettingsWrapper";
 import routes from "@/services/routes";
 import Stream, { StreamType } from "@/services/stream";
+
+const { Text } = Typography;
 
 type EditStreamProps = {
   dataSourceId: string;
@@ -23,12 +26,19 @@ interface EditStreamFormProps {
   stream: StreamType;
 }
 
+type RowType = {
+  name: string;
+  value: string;
+  pre?: boolean | undefined;
+}
+
 const EditStreamForm: React.FC<EditStreamFormProps> = ({ stream }) => {
   const data = [
     // {"name": "Stream name", "value": stream.name},
-    {"name": "Database table", "value": stream.db_table},
+    {"name": "Database table", "value": stream.db_table!},
     // {"name": "Table preset", "value": stream.db_table_preset},
-    {"name": "Ingest URL", "value": stream.ingest_url},
+    {"name": "Ingest URL", "value": stream.ingest_url!},
+    {"name": "Schema (SQL)", "value": stream.db_table_query!, "pre": true},
   ]
 
   const columns = [
@@ -36,12 +46,20 @@ const EditStreamForm: React.FC<EditStreamFormProps> = ({ stream }) => {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      render: (value: string) => <b>{value}</b>,
     },
     {
       title: "Value",
       dataIndex: "value",
       key: "value",
+      render: (_: any, item: RowType) => (
+        item.pre ? (
+          <pre style={{margin: 0, padding: 0}}>
+            <Text copyable>{item.value}</Text>
+          </pre>
+        ) : (
+          <Text code copyable>{item.value}</Text>
+        )
+      ),
     }
   ]
 
@@ -57,6 +75,14 @@ const EditStreamForm: React.FC<EditStreamFormProps> = ({ stream }) => {
           pagination={false}
           size="middle"
         />
+
+        <h4>Ingest example</h4>
+
+        <pre style={{margin: 0, padding: 0}}>
+          <SyntaxHighlighter language="bash">
+            {stream.ingest_example.curl}
+          </SyntaxHighlighter>
+        </pre>
       </Col>
     </Row>
   )

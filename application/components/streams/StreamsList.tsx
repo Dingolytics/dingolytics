@@ -9,7 +9,6 @@ const { Text } = Typography;
 import { DataSourceType } from "@/services/data-source";
 import { StreamType } from "@/services/stream";
 import DatabaseItem from "@/components/databases/DatabaseItem";
-import InputWithCopy from "@/components/general/InputWithCopy";
 import navigateTo from "@/components/router/navigateTo";
 
 type ListComponentProps = {
@@ -41,19 +40,15 @@ const streamsColumns: ColumnsType<StreamType> = [
     title: "Name",
     dataIndex: "name",
     key: "name",
-    render: (_, item) => <Text strong>{item.name}</Text>,
     "width": "35%",
+    render: (_, item) => <Text strong>{item.name}</Text>
   },
   {
     title: "Table name",
     dataIndex: "db_table",
     key: "db_table",
     "width": "40%",
-    render: (_, item) => (
-      <Space.Compact>
-        <InputWithCopy value={item.db_table} readOnly />
-      </Space.Compact>
-    ),
+    render: (_, item) => <Text copyable>{item.db_table}</Text>
   },
   {
     title: "",
@@ -79,6 +74,7 @@ const StreamsList: React.FC<ListComponentProps> = ({ items }) =>
     <Text>There are no streams configured yet.</Text>
   ) : (
     <Table
+      showHeader={false}
       columns={streamsColumns}
       rowKey={(item) => item.id}
       dataSource={items}
@@ -98,6 +94,7 @@ const GrouppedStreamsList: React.FC<ListComponentProps> = ({ items }) =>
     <Text>There are no streams configured yet.</Text>
   ) : (
     <Table
+      showHeader={false}
       columns={groupColumns}
       rowKey={(item) => `${item.id}`}
       dataSource={items}
@@ -107,7 +104,6 @@ const GrouppedStreamsList: React.FC<ListComponentProps> = ({ items }) =>
         defaultExpandAllRows: true,
         expandRowByClick: true,
       }}
-      showHeader={false}
       size="middle"
       // bordered
     />
