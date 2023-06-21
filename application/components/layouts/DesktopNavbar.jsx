@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import { first, includes } from "@lodash";
+import { Typography } from "antd";
 import Menu from "antd/lib/menu";
 import Link from "@/components/general/Link";
 import PlainButton from "@/components/general/PlainButton";
@@ -9,6 +10,8 @@ import { useCurrentRoute } from "@/components/router/Router";
 import { Auth, currentUser } from "@/services/auth";
 import settingsMenu from "@/services/settingsMenu";
 import logoUrl from "@/assets/images/icon-80.png";
+
+const { Text } = Typography;
 
 // import DesktopOutlinedIcon from "@ant-design/icons/DesktopOutlined";
 // import CodeOutlinedIcon from "@ant-design/icons/CodeOutlined";
@@ -172,43 +175,38 @@ function useNavbarActiveState() {
   );
 }
 
-/** 
- * @param {string | JSX.Element} label
- * @param {string | JSX.Element} icon
- */
-function getMenuItem(label, key = '', icon = '', disabled = false) {
-  return { key, icon, label, disabled };
-}
-
 export default function DesktopNavbar() {
   const firstSettingsTab = first(settingsMenu.getAvailableItems());
-  const activeState = useNavbarActiveState();
+  // const activeState = useNavbarActiveState();
 
-  // const onClick = (/** @type {any} */ e) => {
-  //   console.log('click ', e);
-  // };
-  // console.log('activeState', activeState)
+  /** 
+   * @param {string | JSX.Element} label
+   * @param {string | JSX.Element} icon
+   */
+  function getMenuItem(label, key = '', icon = '', disabled = false) {
+    return { key, icon, label, disabled };
+  }
 
   return (
     <nav className="desktop-navbar">
-      <Menu selectable={false} theme="dark" mode="vertical" className="desktop-navbar-logo"
+      <Menu selectable={true} className="desktop-navbar-main-menu"
+        mode="vertical"
+        theme="dark"
         items={[
-          getMenuItem(
-            (
+          {
+            key: "home",
+            label: (
               <Link href="./">
-                <img src={logoUrl} alt="Redash" />
+                <img src={logoUrl} alt="Dingolytics" />
               </Link>
-            ), "home", ""
-          )
-        ]}
-      />
-
-      <Menu selectable={true} mode="vertical" theme="dark"
-        items={[
+            ),
+            title: "Home",
+            disabled: true
+          },
           (
             currentUser.hasPermission("view_query") &&
             getMenuItem(
-              (<Link href="queries">Queries</Link>),
+              <Link href="queries">Queries</Link>,
               "queries",
               <CodeOutlinedIcon2 aria-label="Queries navigation button" />
             )
@@ -231,7 +229,7 @@ export default function DesktopNavbar() {
           ),
           (
             firstSettingsTab && getMenuItem(
-              (<Link href={firstSettingsTab.path}>Settings</Link>),
+              <Link href={firstSettingsTab.path}>Settings</Link>,
               "settings",
               <SettingOutlinedIcon2 aria-label="Settings navigation button" />
             )
@@ -239,28 +237,28 @@ export default function DesktopNavbar() {
         ].filter(Boolean)}
       />
 
-      <Menu selectable={false} mode="vertical" theme="dark" className="desktop-navbar-profile-menu"
+      <Menu selectable={false} mode="vertical" theme="dark"
+        className="desktop-navbar-profile-menu"
         items={[
-          // { type: 'divider' },
           {
+            key: "profile",
             label: (
-              <span className="desktop-navbar-profile-menu-title">
-                <img className="profile__image_thumb"
-                  src={currentUser.profile_image_url} alt={currentUser.name}
-                />
-              </span>
+              <Link href="javascript:void(0)">
+                {currentUser.name}
+              </Link>
             ),
+            icon: null,
             popupClassName: "desktop-navbar-submenu",
             children: [
               getMenuItem(
-                (<Link href="users/me">Profile</Link>),
+                <Link href="users/me">Profile</Link>,
                 "profile",
                 ""
               ),
               (
                 currentUser.hasPermission("super_admin") &&
                 getMenuItem(
-                  (<Link href="admin/status">System Status</Link>),
+                  <Link href="admin/status">System Status</Link>,
                   "status",
                   ""
                 )
@@ -277,7 +275,7 @@ export default function DesktopNavbar() {
               ),
               { type: 'divider' },
               getMenuItem(
-                (<VersionInfo />),
+                <VersionInfo />,
                 "version",
                 "",
                 true

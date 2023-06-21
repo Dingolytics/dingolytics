@@ -1,173 +1,47 @@
-// @backgroundColor: #002222;
-@backgroundColor: #000000;
-@dividerColor: rgba(255, 255, 255, 0.5);
-@textColor: rgba(255, 255, 255, 0.75);
-@brandColor: #c7522a;
-@activeItemColor: @brandColor;
-@iconSize: 26px;
+@desktopNavbarLogoPadding: .5rem;
+@desktopNavbarLogoHeight: 3.6rem;
+@desktopNavbarItemTextPadding: .5rem;
 
 .desktop-navbar {
-  background: @backgroundColor;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 80px;
-  overflow: hidden;
+  height: 100vh;
+  position: relative;
 
-  &-spacer {
-    flex: 1 1 auto;
-  }
-
-  &-logo.ant-menu {
-    padding-top: 20px;
-    padding-bottom: 20px;
-    text-align: center;
-
-    img {
-      height: 40px;
-      transition: all 270ms;
-    }
-  }
-
-  .help-trigger {
-    font: inherit;
-  }
-
-  .ant-menu {
-    .ant-menu-item,
-    .ant-menu-submenu {
-      font-weight: 500;
-      color: @textColor;
-
-      &.navbar-active-item {
-        box-shadow: inset 3px 0 0 @activeItemColor;
-
-        .anticon {
-          color: @activeItemColor;
-        }
-      }
-
-      &.ant-menu-submenu-open,
-      &.ant-menu-submenu-active,
-      &:hover,
-      &:active,
-      &:focus,
-      &:focus-within {
-        color: #fff;
-      }
-
-      .anticon {
-        font-size: @iconSize;
-        margin: 0;
-      }
-
-      .desktop-navbar-label {
-        margin-top: 4px;
-        font-size: 11px;
-      }
-
-      a,
-      span,
-      .anticon {
-        color: inherit;
-      }
-    }
-
-    .ant-menu-submenu-arrow {
-      display: none;
-    }
-
-    .ant-menu-item,
-    .ant-menu-submenu {
-      padding: 0;
-      height: 64px;
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .ant-menu-submenu-title {
-      width: 100%;
-      padding: 0;
-    }
-
-    a,
-    &.ant-menu-vertical > .ant-menu-submenu > .ant-menu-submenu-title,
-    .ant-menu-submenu-title {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      line-height: normal;
-      height: auto;
-      background: none;
-      color: inherit;
-    }
+  .desktop-navbar-main-menu {
+    height: 100%;
   }
 
   .desktop-navbar-profile-menu {
-    .desktop-navbar-profile-menu-title {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
 
-      .profile__image_thumb {
-        margin: 0;
-        vertical-align: middle;
-        width: @iconSize;
-        height: @iconSize;
-      }
+  .ant-menu-item.ant-menu-item-only-child {
+    display: block;
+    padding: @desktopNavbarLogoPadding;
+    height: @desktopNavbarLogoHeight + 2*@desktopNavbarLogoPadding;
+    text-align: center;
+    img {
+      max-height: @desktopNavbarLogoHeight;
+    }
+    .ant-menu-title-content {
+      padding-left: 0;
     }
   }
-}
 
-.desktop-navbar-submenu {
-  .ant-menu {
-    .ant-menu-item-divider {
-      background: @dividerColor;
+  .ant-menu-item,
+  .ant-menu-submenu {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    .ant-menu-title-content {
+      padding-left: @desktopNavbarItemTextPadding;
     }
+  }
 
-    .ant-menu-item {
-      font-weight: 500;
-      color: @textColor;
-
-      &:hover,
-      &:active,
-      &:focus,
-      &:focus-within {
-        color: #fff;
-      }
-
-      a,
-      span,
-      .anticon {
-        color: inherit;
-      }
-
-      .zmdi,
-      .fa {
-        margin-right: 5px;
-      }
-
-      &.version-info {
-        height: auto;
-        line-height: normal;
-        padding-top: 12px;
-        padding-bottom: 12px;
-
-        a {
-          color: rgba(255, 255, 255, 0.8);
-
-          &:hover,
-          &:active,
-          &:focus,
-          &:focus-within {
-            color: rgba(255, 255, 255, 1);
-          }
-        }
-      }
-    }
+  .ant-menu-submenu-title {
+    background-color: rgba(255, 255, 255, 0.05);
+    font-weight: 500;
   }
 }
