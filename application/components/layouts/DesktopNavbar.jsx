@@ -17,7 +17,7 @@ const DatabaseOutlinedIcon = () => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg"
       className="icon icon-tabler icon-tabler-database"
-      width="32" height="32" viewBox="0 0 24 24"
+      width="24" height="24" viewBox="0 0 24 24"
       strokeWidth="1.5" stroke="#ffffff" fill="none"
       strokeLinecap="round" strokeLinejoin="round"
     >
@@ -33,18 +33,23 @@ const ReportOutlinedIcon = () => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg"
       className="icon icon-tabler icon-tabler-report"
-      width="32" height="32" viewBox="0 0 24 24"
+      width="24" height="24" viewBox="0 0 24 24"
       strokeWidth="1.5" stroke="#ffffff" fill="none"
       strokeLinecap="round" strokeLinejoin="round"
     >
-      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <path d="M3 12m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
+      <path d="M9 8m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
+      <path d="M15 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
+      <path d="M4 20l14 0"></path>
+
+      {/* <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
       <path d="M8 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h5.697" />
       <path d="M18 14v4h4" />
       <path d="M18 11v-4a2 2 0 0 0 -2 -2h-2" />
       <rect x="8" y="3" width="6" height="4" rx="2" />
       <circle cx="18" cy="18" r="4" />
       <path d="M8 11h4" />
-      <path d="M8 15h3" />
+      <path d="M8 15h3" /> */}
     </svg>
   )
 }
@@ -53,7 +58,7 @@ const TerminalOutlinedIcon = () => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg"
       className="icon icon-tabler icon-tabler-terminal-2"
-      width="32" height="32" viewBox="0 0 24 24"
+      width="24" height="24" viewBox="0 0 24 24"
       strokeWidth="1.5" stroke="#ffffff" fill="none"
       strokeLinecap="round" strokeLinejoin="round"
     >
@@ -69,7 +74,7 @@ const SettingOutlinedIcon = () => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg"
       className="icon icon-tabler icon-tabler-settings"
-      width="32" height="32" viewBox="0 0 24 24"
+      width="24" height="24" viewBox="0 0 24 24"
       strokeWidth="1.5" stroke="#ffffff" fill="none"
       strokeLinecap="round" strokeLinejoin="round"
     >
@@ -84,7 +89,7 @@ const TransferInOutlinedIcon = () => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg"
       className="icon icon-tabler icon-tabler-transfer-in"
-      width="32" height="32" viewBox="0 0 24 24"
+      width="24" height="24" viewBox="0 0 24 24"
       strokeWidth="1.5" stroke="#ffffff" fill="none"
       strokeLinecap="round" strokeLinejoin="round"
     >
@@ -100,7 +105,7 @@ const HelpOutlinedIcon = () => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg"
       className="icon icon-tabler icon-tabler-help"
-      width="32" height="32" viewBox="0 0 24 24"
+      width="24" height="24" viewBox="0 0 24 24"
       strokeWidth="1.5" stroke="#ffffff" fill="none"
       strokeLinecap="round" strokeLinejoin="round"
     >
