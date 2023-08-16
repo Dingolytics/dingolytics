@@ -1,8 +1,17 @@
 import React, { useRef, useCallback } from "react";
 import PropTypes from "prop-types";
-import DynamicComponent from "@/components/general/DynamicComponent";
+import { Layout, Space } from 'antd';
+
+// import DynamicComponent from "@/components/general/DynamicComponent";
 import DesktopNavbar from "@/components/layouts/DesktopNavbar";
 import MobileNavbar from "@/components/layouts/MobileNavbar";
+
+const { Sider, Content } = Layout;
+
+const contentStyle = {
+  padding: '1rem',
+  overflow: 'visible',
+};
 
 export default function ApplicationLayout({ children }) {
   const mobileNavbarContainerRef = useRef();
@@ -10,23 +19,19 @@ export default function ApplicationLayout({ children }) {
   const getMobileNavbarPopupContainer = useCallback(() => mobileNavbarContainerRef.current, []);
 
   return (
-    <React.Fragment>
-      <DynamicComponent name="ApplicationWrapper">
-        <div className="application-layout-side-menu">
-          <DynamicComponent name="ApplicationDesktopNavbar">
-            <DesktopNavbar />
-          </DynamicComponent>
-        </div>
-        <div className="application-layout-content">
-          <nav className="application-layout-top-menu" ref={mobileNavbarContainerRef}>
-            <DynamicComponent name="ApplicationMobileNavbar" getPopupContainer={getMobileNavbarPopupContainer}>
-              <MobileNavbar getPopupContainer={getMobileNavbarPopupContainer} />
-            </DynamicComponent>
-          </nav>
-          {children}
-        </div>
-      </DynamicComponent>
-    </React.Fragment>
+    <Layout>
+      <Sider className="application-layout-side-menu">
+        <DesktopNavbar />
+      </Sider>
+      <Content style={contentStyle}>
+        <nav className="application-layout-top-menu"
+          ref={mobileNavbarContainerRef}
+        >
+          <MobileNavbar getPopupContainer={getMobileNavbarPopupContainer} />
+        </nav>
+        {children}
+      </Content>
+    </Layout>
   );
 }
 
