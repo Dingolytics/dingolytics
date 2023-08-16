@@ -1,22 +1,29 @@
-import React, { useRef, useCallback } from "react";
-import PropTypes from "prop-types";
-import { Layout, Space } from 'antd';
+import React, { useRef, useCallback, CSSProperties } from "react";
+import { Layout } from 'antd';
 
-// import DynamicComponent from "@/components/general/DynamicComponent";
 import DesktopNavbar from "@/components/layouts/DesktopNavbar";
 import MobileNavbar from "@/components/layouts/MobileNavbar";
 
 const { Sider, Content } = Layout;
 
-const contentStyle = {
+const contentStyle: CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
   padding: '1rem',
   overflow: 'visible',
+  minHeight: '100vh',
 };
 
-export default function ApplicationLayout({ children }) {
-  const mobileNavbarContainerRef = useRef();
+type ApplicationLayoutProps = {
+  children: React.ReactNode;
+}
 
-  const getMobileNavbarPopupContainer = useCallback(() => mobileNavbarContainerRef.current, []);
+const ApplicationLayout: React.FC<ApplicationLayoutProps> = ({ children }) => {
+  const mobileNavbarContainerRef = useRef<any>();
+
+  const getMobileNavbarPopupContainer = useCallback(
+    () => mobileNavbarContainerRef.current, []
+  );
 
   return (
     <Layout>
@@ -35,10 +42,4 @@ export default function ApplicationLayout({ children }) {
   );
 }
 
-ApplicationLayout.propTypes = {
-  children: PropTypes.node,
-};
-
-ApplicationLayout.defaultProps = {
-  children: null,
-};
+export default ApplicationLayout;

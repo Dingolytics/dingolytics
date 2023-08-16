@@ -96,13 +96,9 @@ class StreamsList extends Component<StreamsPageProps, StreamsPageState> {
           this.state.loading ? (
             <LoadingState className="" />
           ) : (
-            <Row>
-              <Col span={24} lg={{span: 16}}>
-                <GrouppedStreamsList
-                  items={this.state.dataSources}
-                />
-              </Col>
-            </Row>
+            <GrouppedStreamsList
+              items={this.state.dataSources}
+            />
           )
         }
 

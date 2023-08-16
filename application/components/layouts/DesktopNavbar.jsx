@@ -198,14 +198,14 @@ export default function DesktopNavbar() {
           //     <DatabaseOutlinedIcon aria-label="Data navigation button" />
           //   )
           // ),
-          // (
-          //   // currentUser.hasPermission("view_query") &&
-          //   getMenuItem(
-          //     <Link href="queries">Queries</Link>,
-          //     "queries",
-          //     <TerminalOutlinedIcon aria-label="Queries navigation button" />
-          //   )
-          // ),
+          (
+            // currentUser.hasPermission("view_query") &&
+            getMenuItem(
+              <Link href="queries">Queries</Link>,
+              "queries",
+              <TerminalOutlinedIcon aria-label="Queries navigation button" />
+            )
+          ),
           (
             // currentUser.hasPermission("list_dashboards") &&
             getMenuItem(
