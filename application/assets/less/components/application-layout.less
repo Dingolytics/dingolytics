@@ -32,35 +32,12 @@ body #application-root {
       display: block;
     }
   }
-
-  .application-layout-content {
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-
-    flex: 1 1 auto;
-    padding-bottom: 15px;
-
-    @media @mobileBreakpoint {
-      margin-top: @topMenuHeight; // compensate for app header fixed position
-    }
-  }
-}
-
-body.fixed-layout #application-root {
-  .application-layout-content {
-    padding-bottom: 0;
-  }
 }
 
 body.headless #application-root {
   .application-layout-side-menu,
   .application-layout-top-menu {
     display: none !important;
-  }
-
-  .application-layout-content {
-    margin-top: 0;
   }
 }
 
@@ -72,10 +49,6 @@ body.headless #application-root {
 
     .application-layout-side-menu {
       height: auto;
-    }
-
-    .application-layout-content {
-      overflow: visible;
     }
   }
 }

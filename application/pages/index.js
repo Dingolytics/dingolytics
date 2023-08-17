@@ -31,5 +31,7 @@ import "./query-snippets/QuerySnippetsList";
 
 import "./settings/OrganizationSettings";
 
+import "./streams/StreamsList";
+
 import "./users/UsersList";
 import "./users/UserProfile";
