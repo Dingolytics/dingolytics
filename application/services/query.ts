@@ -30,6 +30,19 @@ Mustache.escape = identity; // do not html-escape values
 
 const logger = debug("redash:services:query");
 
+export type QueryType = {
+  readonly id?: number;
+  name: string;
+  description: string;
+  query: string;
+  data_source_id: number;
+  latest_query_data_id: number | null;
+  tags: string[];
+  version: number;
+  options?: object;
+  // ...
+}
+
 function collectParams(parts) {
   let parameters = [];
 
@@ -409,3 +422,5 @@ QueryService.newQuery = function newQuery() {
 };
 
 extend(Query, QueryService);
+
+export default QueryService;

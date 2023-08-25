@@ -237,7 +237,7 @@ export default function DesktopNavbar() {
           {
             key: "profile",
             label: (
-              <Link href="javascript:void(0)">
+              <Link>
                 {currentUser.name}
               </Link>
             ),
