@@ -3,20 +3,20 @@ import { Component } from "react";
 import { Breadcrumb, Button, Select, Space, Typography } from "antd";
 const { Title, Text } = Typography;
 
-/** Components */
-import CreateStreamDialog from "@/components/streams/CreateStreamDialog";
-import LoadingState from "@/components/items-list/components/LoadingState";
-import { GrouppedStreamsList} from "@/components/streams/StreamsList";
+/** Components utils */
 import navigateTo from "@/components/router/navigateTo";
 import routeWithUserSession from "@/components/router/routeWithUserSession";
 
 /** Services */
 import routes from "@/services/routes";
 import Query, { QueryType } from "@/services/query";
-import Stream, { StreamType } from "@/services/stream";
+
+/** Components */
+import WidgetsListPredefined from "./WidgetsListPredefined"
 
 /** Type definitions */
 type WidgetsPageProps = {
+  queryId?: string;
   onError?: (error: Error) => void;
 }
 
@@ -35,6 +35,7 @@ class WidgetsList extends Component<WidgetsPageProps, WidgetsPageState> {
   };
 
   componentDidMount() {
+    // console.log("[componentDidMount]", this.props)
     this.reloadState();
   }
 
@@ -48,12 +49,13 @@ class WidgetsList extends Component<WidgetsPageProps, WidgetsPageState> {
         queries: data.results,
         loading: false
       })
-      // console.log(result)
+      // console.log("[reloadState]", data)
     })
   }
 
-  onQuerySelected(value: number) {
-    console.log("[onQuerySelected]", value)
+  onQuerySelected(queryId: number) {
+    // console.log("[onQuerySelected]", queryId)
+    navigateTo(`widgets/${queryId}`, true)
   }
 
   render() {
@@ -76,9 +78,10 @@ class WidgetsList extends Component<WidgetsPageProps, WidgetsPageState> {
           showSearch
           placeholder="Select a query..."
           onChange={this.onQuerySelected}
+          defaultValue={this.props.queryId}
           options={this.state.queries.map((query) => {
             return {
-              value: query.id,
+              value: `${query.id}`,
               label: (
                 <Text>
                   <Text strong>{query.name}</Text>
@@ -88,16 +91,16 @@ class WidgetsList extends Component<WidgetsPageProps, WidgetsPageState> {
                   </Text>
                 </Text>
               )
-              // label: query.name + (
-              //   query.description ?
-              //     ` (${query.description})` :
-              //     "<span>ddd</span>"
-              //     // ` (${query.query})`
-              // ),
             }
           })}
           style={{ width: "100%" }}
         />
+
+        {
+          this.props.queryId && (
+            <WidgetsListPredefined queryId={this.props.queryId} />
+          )
+        }
       </Space>
     )
   }
@@ -109,6 +112,17 @@ routes.register(
   "Widgets.List",
   routeWithUserSession({
     path: "/widgets",
+    title: "Widgets",
+    render: (pageProps) => (
+      <WidgetsListPage {...pageProps} />
+    ),
+  })
+);
+
+routes.register(
+  "Widgets.View",
+  routeWithUserSession({
+    path: "/widgets/:queryId",
     title: "Widgets",
     render: (pageProps) => (
       <WidgetsListPage {...pageProps} />
