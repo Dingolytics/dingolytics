@@ -22,7 +22,6 @@ type WidgetsPageProps = {
 
 type WidgetsPageState = {
   queries: QueryType[];
-  selectedQuery?: QueryType;
   loading: boolean;
 }
 
@@ -30,7 +29,6 @@ type WidgetsPageState = {
 class WidgetsList extends Component<WidgetsPageProps, WidgetsPageState> {
   state: WidgetsPageState = {
     queries: [],
-    selectedQuery: undefined,
     loading: true,
   };
 
@@ -78,7 +76,6 @@ class WidgetsList extends Component<WidgetsPageProps, WidgetsPageState> {
           showSearch
           placeholder="Select a query..."
           onChange={this.onQuerySelected}
-          defaultValue={this.props.queryId}
           options={this.state.queries.map((query) => {
             return {
               value: `${query.id}`,
@@ -93,6 +90,10 @@ class WidgetsList extends Component<WidgetsPageProps, WidgetsPageState> {
               )
             }
           })}
+          // @ts-ignore, NOTE: Why is this complaining?!?
+          defaultValue={
+            this.props.queryId ? `${this.props.queryId}` : undefined
+          }
           style={{ width: "100%" }}
         />
 

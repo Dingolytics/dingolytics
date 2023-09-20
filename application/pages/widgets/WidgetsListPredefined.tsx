@@ -1,18 +1,41 @@
 import React from 'react'
+import { Breadcrumb, Button, Card, Space, Typography } from "antd";
+const { Title, Text } = Typography;
 
-type _Props = {
+type ListProps = {
   queryId: string;
 }
 
-const WidgetsListPredefined: React.FC<_Props> = ({ queryId }) => {
+type SampleProps = {
+  title: string;
+  url: string;
+}
+
+const WidgetSample: React.FC<SampleProps> = (props) => {
+  return (
+    <Card title={props.title} bordered={false}>
+      <Space direction="vertical">
+        <Text copyable={true}>{props.url}</Text>
+        <iframe src={props.url} width="100%" height="64"></iframe>
+      </Space>
+    </Card>
+    // <Space direction="vertical">
+    //   <Title level={3}>{props.title}</Title>
+    //   <Text copyable={true}>{props.url}</Text>
+    //   <iframe src={props.url} width="100%"></iframe>
+    // </Space>
+  )
+}
+
+const WidgetsListPredefined: React.FC<ListProps> = (props) => {
   var loc = window.location
-  const baseUrl = `${loc.protocol}//${loc.host}/`
-  const plainSVGUrl = `${baseUrl}ext/widgets/${queryId}/plain.svg`
+  const baseUrl = `${loc.protocol}//${loc.host}/ext/widgets/${props.queryId}`
   return (
     <div>
-      <h1>WidgetsListPredefined</h1>
-      <p>queryId: {queryId}</p>
-      <p>{plainSVGUrl}</p>
+      <WidgetSample
+        title="Plain number (SVG)"
+        url={`${baseUrl}/plain.svg`}
+      />
     </div>
   )
 }
