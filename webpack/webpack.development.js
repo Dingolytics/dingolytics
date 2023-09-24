@@ -35,8 +35,9 @@ module.exports = {
           "/invite",
           "/setup",
           "/status.json",
-          "/api",
-          "/oauth"
+          "/api/",
+          "/oauth/",
+          "/ext/"
         ],
         target: redashBackend + "/",
         changeOrigin: false,
