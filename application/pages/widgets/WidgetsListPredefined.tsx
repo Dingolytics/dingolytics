@@ -28,6 +28,7 @@ const WidgetSample: React.FC<SampleProps> = (props) => {
 const WidgetsListPredefined: React.FC<ListProps> = (props) => {
   var loc = window.location
   const baseUrl = `${loc.protocol}//${loc.host}/ext/widgets/${props.queryId}`
+  const shieldUrl = `https://img.shields.io/badge/dynamic/json?url=${baseUrl}/raw.json?p_application=main&query=$.data.rows[0].value&label=Events%20count`
   return (
     <Space direction="vertical">
       <Row gutter={[16, 16]}>
@@ -48,7 +49,7 @@ const WidgetsListPredefined: React.FC<ListProps> = (props) => {
         <Col xs={24} md={12} lg={8}>
           <WidgetSample
             title="Shield.io example"
-            url={`${baseUrl}/plain.svg`}
+            url={shieldUrl}
             height={60}
           />
         </Col>
