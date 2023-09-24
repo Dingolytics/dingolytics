@@ -1,6 +1,6 @@
 import React from 'react'
-import { Breadcrumb, Button, Card, Space, Typography } from "antd";
-const { Title, Text } = Typography;
+import { Card, Space, Typography, Col, Row } from "antd";
+const { Text } = Typography;
 
 type ListProps = {
   queryId: string;
@@ -9,6 +9,7 @@ type ListProps = {
 type SampleProps = {
   title: string;
   url: string;
+  height: number;
 }
 
 const WidgetSample: React.FC<SampleProps> = (props) => {
@@ -16,14 +17,11 @@ const WidgetSample: React.FC<SampleProps> = (props) => {
     <Card title={props.title} bordered={false}>
       <Space direction="vertical">
         <Text copyable={true}>{props.url}</Text>
-        <iframe src={props.url} width="100%" height="64"></iframe>
+        <iframe src={props.url}
+          width="100%" height={props.height}
+        ></iframe>
       </Space>
     </Card>
-    // <Space direction="vertical">
-    //   <Title level={3}>{props.title}</Title>
-    //   <Text copyable={true}>{props.url}</Text>
-    //   <iframe src={props.url} width="100%"></iframe>
-    // </Space>
   )
 }
 
@@ -31,12 +29,31 @@ const WidgetsListPredefined: React.FC<ListProps> = (props) => {
   var loc = window.location
   const baseUrl = `${loc.protocol}//${loc.host}/ext/widgets/${props.queryId}`
   return (
-    <div>
-      <WidgetSample
-        title="Plain number (SVG)"
-        url={`${baseUrl}/plain.svg`}
-      />
-    </div>
+    <Space direction="vertical">
+      <Row gutter={[16, 16]}>
+        <Col xs={24} md={12} lg={8}>
+          <WidgetSample
+            title="Raw JSON"
+            url={`${baseUrl}/raw.json`}
+            height={120}
+          />
+        </Col>
+        <Col xs={24} md={12} lg={8}>
+          <WidgetSample
+            title="Plain number (SVG)"
+            url={`${baseUrl}/plain.svg`}
+            height={60}
+          />
+        </Col>
+        <Col xs={24} md={12} lg={8}>
+          <WidgetSample
+            title="Shield.io example"
+            url={`${baseUrl}/plain.svg`}
+            height={60}
+          />
+        </Col>
+      </Row>
+    </Space>
   )
 }
 
