@@ -48,7 +48,7 @@ const WidgetsListPredefined: React.FC<ListProps> = (props) => {
         </Col>
         <Col xs={24} md={12} lg={8}>
           <WidgetSample
-            title="Shield.io example"
+            title="Shields.io example"
             url={shieldUrl}
             height={60}
           />

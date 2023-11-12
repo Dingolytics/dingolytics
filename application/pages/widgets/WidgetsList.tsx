@@ -47,7 +47,10 @@ class WidgetsList extends Component<WidgetsPageProps, WidgetsPageState> {
         queries: data.results,
         loading: false
       })
-      // console.log("[reloadState]", data)
+
+      if (data.results && !this.props.queryId) {
+        navigateTo(`widgets/${data.results[0].id}`, true)
+      }
     })
   }
 
