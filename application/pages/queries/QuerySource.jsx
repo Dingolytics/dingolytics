@@ -4,7 +4,8 @@ import PropTypes from "prop-types";
 import cx from "classnames";
 import { useDebouncedCallback } from "use-debounce";
 import useMedia from "use-media";
-import Button from "antd/lib/button";
+import { Breadcrumb, Button } from "antd"
+
 import routeWithUserSession from "@/components/router/routeWithUserSession";
 import Resizable from "@/components/layouts/Resizable";
 import Parameters from "@/components/parameters/Parameters";
@@ -209,7 +210,26 @@ function QuerySource(props) {
 
   return (
     <div className={cx("query-page-wrapper", { "query-fixed-layout": !isMobile })}>
-      <QuerySourceAlerts query={query} dataSourcesAvailable={!dataSourcesLoaded || dataSources.length > 0} />
+      <Breadcrumb
+        items={[
+          {
+            title: "Home",
+            href: "/",
+          },
+          {
+            title: "Queries",
+            href: "/queries",
+          },
+          {
+            title: "New query",
+          },
+        ]}
+      />
+
+      <QuerySourceAlerts query={query}
+        dataSourcesAvailable={!dataSourcesLoaded || dataSources.length > 0}
+      />
+
       <div className="container w-100 p-b-10">
         <QueryPageHeader
           query={query}

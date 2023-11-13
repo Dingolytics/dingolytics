@@ -157,7 +157,7 @@ export default function QueryPageHeader({
             </h3>
           </div>
         </div>
-        <div className="query-tags">
+        {/* <div className="query-tags">
           <QueryTagsControl
             tags={query.tags}
             isDraft={queryFlags.isDraft}
@@ -167,7 +167,7 @@ export default function QueryPageHeader({
             onEdit={updateTags}
             tagsExtra={tagsExtra}
           />
-        </div>
+        </div> */}
       </div>
       <div className="header-actions">
         {headerExtra}

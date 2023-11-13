@@ -195,6 +195,7 @@ export default class ItemsTable extends React.Component {
 
     return (
       <Table
+        size="small"
         className={classNames("table-data", { "ant-table-headerless": !showHeader })}
         showHeader={showHeader}
         rowKey={this.getRowKey}

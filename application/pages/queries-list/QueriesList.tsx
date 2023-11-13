@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Breadcrumb, Space, Tabs, Typography } from "antd";
+import { Breadcrumb, Button, Space, Tabs, Typography } from "antd";
 import type { TabsProps } from "antd";
 
 import navigateTo from "@/components/router/navigateTo";
@@ -55,7 +55,7 @@ const tabsItems: TabsProps["items"] = [
 
 const onTabChange = (key: string) => {
   navigateTo(
-    (key === "all") ? "/queries" : `/queries/${key}`
+    (key === "my") ? "/queries" : `/queries/${key}`
   );
 }
 
@@ -64,7 +64,7 @@ const listColumns = [
   Columns.custom.sortable(
     (text, item) => (
       <React.Fragment>
-        <Link className="table-main-title" href={"/queries/" + item.id}>
+        <Link className="table-main-title" href={`/queries/${item.id}/source`}>
           {item.name}
         </Link>
         <QueryTagsControl className="d-block" tags={item.tags} isDraft={item.is_draft} isArchived={item.is_archived} />
@@ -141,10 +141,10 @@ function QueriesList({ controller }) {
               title: "Home",
               href: "/",
             },
-            {
-              title: "Queries",
-              href: "/queries",
-            },
+            // {
+            //   title: "Queries",
+            //   href: "/queries",
+            // },
             {
               title: controller.params.pageTitle,
             }
@@ -156,53 +156,61 @@ function QueriesList({ controller }) {
           reports and dynamics widgets.
         </Paragraph>
 
-        <Tabs items={tabsItems} onChange={onTabChange}
-          type="card" animated={false}
-          activeKey={controller.params.currentPage}
-        />
-
-        {
-          (controller.params.currentPage != "archive") && (
-            <Space>
-              <Link.Button
-                href="queries/new"
-                type="primary"
-              >
-                Add query
-              </Link.Button>
-            </Space>
-          )
-        }
-
-        {controller.isLoaded && controller.isEmpty ? (
-          <QueriesListEmptyState
-            page={controller.params.currentPage}
-            searchTerm={controller.searchTerm}
-            selectedTags={controller.selectedTags}
+        <div>
+          <Tabs items={tabsItems} onChange={onTabChange}
+            type="card" animated={false}
+            activeKey={controller.params.currentPage}
           />
-        ) : (
-          <React.Fragment>
-            {/* <div>
-              <ExtraActionsComponent selectedItems={selectedItems} />
-            </div> */}
-            <ItemsTable
-              items={controller.pageItems}
-              loading={!controller.isLoaded}
-              columns={tableColumns}
-              orderByField={controller.orderByField}
-              orderByReverse={controller.orderByReverse}
-              toggleSorting={controller.toggleSorting}
+
+          <Space direction="vertical" style={{
+            backgroundColor: "#ffffff",
+            display: "flex",
+            padding: "1rem",
+          }}>
+
+          {
+            (controller.params.currentPage != "archive") && (
+              <Space>
+                <Button
+                  type="default"
+                  // disabled={!allowCreation}
+                  onClick={() => navigateTo("queries/new")}
+                  >
+                    Create new query
+                </Button>
+              </Space>
+            )
+          }
+
+          {controller.isLoaded && controller.isEmpty ? (
+            <QueriesListEmptyState
+              page={controller.params.currentPage}
+              searchTerm={controller.searchTerm}
+              selectedTags={controller.selectedTags}
             />
-            <Paginator
-              showPageSizeSelect
-              totalCount={controller.totalItemsCount}
-              pageSize={controller.itemsPerPage}
-              onPageSizeChange={itemsPerPage => controller.updatePagination({ itemsPerPage })}
-              page={controller.page}
-              onChange={page => controller.updatePagination({ page })}
-            />
-          </React.Fragment>
-        )}
+          ) : (
+            <React.Fragment>
+              <ItemsTable
+                items={controller.pageItems}
+                loading={!controller.isLoaded}
+                columns={tableColumns}
+                orderByField={controller.orderByField}
+                orderByReverse={controller.orderByReverse}
+                toggleSorting={controller.toggleSorting}
+                bordered={false}
+              />
+              <Paginator
+                showPageSizeSelect
+                totalCount={controller.totalItemsCount}
+                pageSize={controller.itemsPerPage}
+                onPageSizeChange={itemsPerPage => controller.updatePagination({ itemsPerPage })}
+                page={controller.page}
+                onChange={page => controller.updatePagination({ page })}
+              />
+            </React.Fragment>
+          )}
+          </Space>
+        </div>
 
         {/* <Layout>
           <Layout.Sidebar>
@@ -251,9 +259,18 @@ const QueriesListPage = itemsList(
 );
 
 routes.register(
-  "Queries.List",
+  "Queries.My",
   routeWithUserSession({
     path: "/queries",
+    title: "My queries",
+    render: pageProps => <QueriesListPage {...pageProps} currentPage="my" />,
+  })
+);
+
+routes.register(
+  "Queries.List",
+  routeWithUserSession({
+    path: "/queries/all",
     title: "All queries",
     render: pageProps => <QueriesListPage {...pageProps} currentPage="all" />,
   })
@@ -274,14 +291,5 @@ routes.register(
     path: "/queries/archive",
     title: "Archived queries",
     render: pageProps => <QueriesListPage {...pageProps} currentPage="archive" />,
-  })
-);
-
-routes.register(
-  "Queries.My",
-  routeWithUserSession({
-    path: "/queries/my",
-    title: "My queries",
-    render: pageProps => <QueriesListPage {...pageProps} currentPage="my" />,
   })
 );

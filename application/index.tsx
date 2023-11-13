@@ -23,6 +23,10 @@ function AppWithCallbackAfterRender() {
           Button: {
             colorPrimary: '#00b96b',
           },
+          Tabs: {
+            lineWidth: 0,
+            horizontalMargin: "0",
+          }
           // Link: {
           //   colorPrimary: '#00b96b',
           // }

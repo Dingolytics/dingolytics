@@ -116,7 +116,7 @@ class StreamsPage extends Component<StreamsPageProps, StreamsPageState> {
               allowCreation ? this.showCreateStreamDialog : undefined
             }
             >
-              Add Stream
+              Create new stream
           </Button>
         </Space>
 
