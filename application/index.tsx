@@ -16,6 +16,11 @@ function AppWithCallbackAfterRender() {
         token: {
           colorPrimary: '#00b96b',
         },
+        components: {
+          Breadcrumb: {
+            fontSize: 18,
+          }
+        }
         // algorithm: theme.darkAlgorithm,
       }}
     >
