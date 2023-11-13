@@ -1,5 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Alert } from "antd";
+
 import Link from "@/components/general/Link";
 import BigMessage from "@/components/general/BigMessage";
 import NoTaggedObjectsFound from "@/components/tags/NoTaggedObjectsFound";
@@ -17,9 +19,11 @@ export default function QueriesListEmptyState({ page, searchTerm, selectedTags }
   }
   switch (page) {
     case "favorites":
-      return <BigMessage message="Mark queries as Favorite to list them here." icon="fa-star" />;
+      return <Alert type="info" message="Mark queries as Favorite to list them here." />;
+
     case "archive":
-      return <BigMessage message="Archived queries will be listed here." icon="fa-archive" />;
+      return <Alert type="info" message="Archived queries will be listed here." />;
+
     case "my":
       const my_msg = currentUser.hasPermission("create_query") ? (
         <span>
@@ -34,6 +38,7 @@ export default function QueriesListEmptyState({ page, searchTerm, selectedTags }
         <span>Sorry, we couldn't find anything.</span>
       );
       return <BigMessage icon="fa-search">{my_msg}</BigMessage>;
+
     default:
       return (
         <DynamicComponent name="QueriesList.EmptyState">

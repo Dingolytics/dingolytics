@@ -19,7 +19,13 @@ function AppWithCallbackAfterRender() {
         components: {
           Breadcrumb: {
             fontSize: 18,
-          }
+          },
+          Button: {
+            colorPrimary: '#00b96b',
+          },
+          // Link: {
+          //   colorPrimary: '#00b96b',
+          // }
         }
         // algorithm: theme.darkAlgorithm,
       }}

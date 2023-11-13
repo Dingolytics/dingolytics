@@ -210,11 +210,11 @@ export class Query {
   }
 
   favorite() {
-    return Query.favorite(this);
+    return QueryService.favorite(this);
   }
 
   unfavorite() {
-    return Query.unfavorite(this);
+    return QueryService.unfavorite(this);
   }
 
   clone() {

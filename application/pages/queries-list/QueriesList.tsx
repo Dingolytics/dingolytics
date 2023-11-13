@@ -1,9 +1,11 @@
 import React, { useEffect, useRef } from "react";
-import cx from "classnames";
+import { Breadcrumb, Space, Tabs, Typography } from "antd";
+import type { TabsProps } from "antd";
 
+import navigateTo from "@/components/router/navigateTo";
 import routeWithUserSession from "@/components/router/routeWithUserSession";
 import Link from "@/components/general/Link";
-import PageHeader from "@/components/general/PageHeader";
+// import PageHeader from "@/components/general/PageHeader";
 import Paginator from "@/components/general/Paginator";
 import DynamicComponent from "@/components/general/DynamicComponent";
 import { QueryTagsControl } from "@/components/tags/TagsControl";
@@ -14,44 +16,48 @@ import useItemsListExtraActions from "@/components/items-list/hooks/useItemsList
 import { ResourceItemsSource } from "@/components/items-list/classes/ItemsSource";
 import { UrlStateStorage } from "@/components/items-list/classes/StateStorage";
 
-import * as Sidebar from "@/components/items-list/components/Sidebar";
+// import * as Sidebar from "@/components/items-list/components/Sidebar";
 import ItemsTable, { Columns } from "@/components/items-list/components/ItemsTable";
 
-import Layout from "@/components/layouts/ContentWithSidebar";
+// import Layout from "@/components/layouts/ContentWithSidebar";
 
 import { Query } from "@/services/query";
-import { currentUser } from "@/services/auth";
+// import { currentUser } from "@/services/auth";
 import location from "@/services/location";
 import routes from "@/services/routes";
 
 import QueriesListEmptyState from "./QueriesListEmptyState";
 
-const sidebarMenu = [
-  {
-    key: "all",
-    href: "/queries",
-    title: "All Queries",
-    icon: () => <Sidebar.MenuIcon icon="fa fa-code" />,
-  },
+const { Paragraph } = Typography;
+
+const tabsItems: TabsProps["items"] = [
+  // {
+  //   key: "favorites",
+  //   label: "Favorites",
+  //   children: "Content of Tab Pane 1",
+  // },
   {
     key: "my",
-    href: "/queries/my",
-    title: "My Queries",
-    icon: () => <Sidebar.ProfileImage user={currentUser} />,
+    label: "My queries",
+    children: null,
   },
   {
-    key: "favorites",
-    href: "/queries/favorites",
-    title: "Favorites",
-    icon: () => <Sidebar.MenuIcon icon="fa fa-star" />,
+    key: "all",
+    label: "All queries",
+    children: null,
   },
   {
     key: "archive",
-    href: "/queries/archive",
-    title: "Archived",
-    icon: () => <Sidebar.MenuIcon icon="fa fa-archive" />,
+    label: "Archived",
+    children: null,
   },
 ];
+
+const onTabChange = (key: string) => {
+  navigateTo(
+    (key === "all") ? "/queries" : `/queries/${key}`
+  );
+}
 
 const listColumns = [
   Columns.favorites({ className: "p-r-0" }),
@@ -76,12 +82,12 @@ const listColumns = [
     title: "Last Executed At",
     field: "retrieved_at",
     orderByField: "executed_at",
-    width: "1%",
+    // width: "1%",
   }),
   Columns.custom.sortable((text, item) => <SchedulePhrase schedule={item.schedule} isNew={item.isNew()} />, {
     title: "Refresh Schedule",
     field: "schedule",
-    width: "1%",
+    // width: "1%",
   }),
 ];
 
@@ -111,12 +117,13 @@ function QueriesList({ controller }) {
     listColumns: tableColumns,
     Component: ExtraActionsComponent,
     selectedItems,
-  } = useItemsListExtraActions(controller, listColumns, QueriesListExtraActions);
+  } = useItemsListExtraActions(
+    controller, listColumns, QueriesListExtraActions
+  );
 
   return (
-    <div className="page-queries-list">
-      <div className="container">
-        <PageHeader
+    <Space direction="vertical">
+        {/* <PageHeader
           title={controller.params.pageTitle}
           actions={
             currentUser.hasPermission("create_query") ? (
@@ -126,8 +133,78 @@ function QueriesList({ controller }) {
               </Link.Button>
             ) : null
           }
+        /> */}
+
+        <Breadcrumb
+          items={[
+            {
+              title: "Home",
+              href: "/",
+            },
+            {
+              title: "Queries",
+              href: "/queries",
+            },
+            {
+              title: controller.params.pageTitle,
+            }
+          ]}
         />
-        <Layout>
+
+        <Paragraph>
+          Queries are written in ClickHouse SQL and are used to generate
+          reports and dynamics widgets.
+        </Paragraph>
+
+        <Tabs items={tabsItems} onChange={onTabChange}
+          type="card" animated={false}
+          activeKey={controller.params.currentPage}
+        />
+
+        {
+          (controller.params.currentPage != "archive") && (
+            <Space>
+              <Link.Button
+                href="queries/new"
+                type="primary"
+              >
+                Add query
+              </Link.Button>
+            </Space>
+          )
+        }
+
+        {controller.isLoaded && controller.isEmpty ? (
+          <QueriesListEmptyState
+            page={controller.params.currentPage}
+            searchTerm={controller.searchTerm}
+            selectedTags={controller.selectedTags}
+          />
+        ) : (
+          <React.Fragment>
+            {/* <div>
+              <ExtraActionsComponent selectedItems={selectedItems} />
+            </div> */}
+            <ItemsTable
+              items={controller.pageItems}
+              loading={!controller.isLoaded}
+              columns={tableColumns}
+              orderByField={controller.orderByField}
+              orderByReverse={controller.orderByReverse}
+              toggleSorting={controller.toggleSorting}
+            />
+            <Paginator
+              showPageSizeSelect
+              totalCount={controller.totalItemsCount}
+              pageSize={controller.itemsPerPage}
+              onPageSizeChange={itemsPerPage => controller.updatePagination({ itemsPerPage })}
+              page={controller.page}
+              onChange={page => controller.updatePagination({ page })}
+            />
+          </React.Fragment>
+        )}
+
+        {/* <Layout>
           <Layout.Sidebar>
             <Sidebar.SearchInput
               placeholder="Search Queries..."
@@ -145,42 +222,8 @@ function QueriesList({ controller }) {
               showUnselectAll
             />
           </Layout.Sidebar>
-          <Layout.Content>
-            {controller.isLoaded && controller.isEmpty ? (
-              <QueriesListEmptyState
-                page={controller.params.currentPage}
-                searchTerm={controller.searchTerm}
-                selectedTags={controller.selectedTags}
-              />
-            ) : (
-              <React.Fragment>
-                <div>
-                  <ExtraActionsComponent selectedItems={selectedItems} />
-                </div>
-                <div className="bg-white tiled table-responsive">
-                  <ItemsTable
-                    items={controller.pageItems}
-                    loading={!controller.isLoaded}
-                    columns={tableColumns}
-                    orderByField={controller.orderByField}
-                    orderByReverse={controller.orderByReverse}
-                    toggleSorting={controller.toggleSorting}
-                  />
-                  <Paginator
-                    showPageSizeSelect
-                    totalCount={controller.totalItemsCount}
-                    pageSize={controller.itemsPerPage}
-                    onPageSizeChange={itemsPerPage => controller.updatePagination({ itemsPerPage })}
-                    page={controller.page}
-                    onChange={page => controller.updatePagination({ page })}
-                  />
-                </div>
-              </React.Fragment>
-            )}
-          </Layout.Content>
-        </Layout>
-      </div>
-    </div>
+        </Layout> */}
+    </Space>
   );
 }
 
@@ -211,31 +254,34 @@ routes.register(
   "Queries.List",
   routeWithUserSession({
     path: "/queries",
-    title: "Queries",
+    title: "All queries",
     render: pageProps => <QueriesListPage {...pageProps} currentPage="all" />,
   })
 );
+
 routes.register(
   "Queries.Favorites",
   routeWithUserSession({
     path: "/queries/favorites",
-    title: "Favorite Queries",
+    title: "Favorite queries",
     render: pageProps => <QueriesListPage {...pageProps} currentPage="favorites" />,
   })
 );
+
 routes.register(
   "Queries.Archived",
   routeWithUserSession({
     path: "/queries/archive",
-    title: "Archived Queries",
+    title: "Archived queries",
     render: pageProps => <QueriesListPage {...pageProps} currentPage="archive" />,
   })
 );
+
 routes.register(
   "Queries.My",
   routeWithUserSession({
     path: "/queries/my",
-    title: "My Queries",
+    title: "My queries",
     render: pageProps => <QueriesListPage {...pageProps} currentPage="my" />,
   })
 );
