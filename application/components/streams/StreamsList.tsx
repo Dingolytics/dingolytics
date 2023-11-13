@@ -24,6 +24,7 @@ const groupColumns: ColumnsType<DataSourceType> = [
   }
 ]
 
+/*
 const settingsDropdownProps = {
   items: [
     {
@@ -34,6 +35,7 @@ const settingsDropdownProps = {
   ],
   onClick: (item: object) => console.log(item),
 };
+*/
 
 const streamsColumns: ColumnsType<StreamType> = [
   {

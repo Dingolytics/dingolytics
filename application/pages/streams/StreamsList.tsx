@@ -1,12 +1,14 @@
 /** General */
-import { Component } from "react";
-import { Button, Space, Typography } from "antd";
-const { Title } = Typography;
+import React, { Component } from "react";
+import { Breadcrumb, Button, Space, Typography } from "antd";
+const { Title, Paragraph } = Typography;
 
 /** Components */
 import CreateStreamDialog from "@/components/streams/CreateStreamDialog";
 import LoadingState from "@/components/items-list/components/LoadingState";
-import { GrouppedStreamsList} from "@/components/streams/StreamsList";
+import { DatabaseTitleItem } from "@/components/databases/DatabaseItem";
+import StreamsList from "@/components/streams/StreamsList";
+// import { GrouppedStreamsList } from "@/components/streams/StreamsList";
 import navigateTo from "@/components/router/navigateTo";
 import routeWithUserSession from "@/components/router/routeWithUserSession";
 
@@ -16,6 +18,7 @@ import DataSource, { annotateWithStreams } from "@/services/data-source";
 import routes from "@/services/routes";
 import { policy } from "@/services/policy";
 import Stream, { StreamType } from "@/services/stream";
+import { style } from "d3";
 
 /** Type definitions */
 type StreamsPageProps = {
@@ -29,8 +32,8 @@ type StreamsPageState = {
   loading: boolean;
 }
 
-/** Component definition */
-class StreamsList extends Component<StreamsPageProps, StreamsPageState> {
+/** Page component definition */
+class StreamsPage extends Component<StreamsPageProps, StreamsPageState> {
   state: StreamsPageState = {
     dataSourceTypes: [],
     dataSources: [],
@@ -85,38 +88,64 @@ class StreamsList extends Component<StreamsPageProps, StreamsPageState> {
     const allowCreation = policy.isCreateDataSourceEnabled();
 
     return (
-      <div>
-        <Title level={4}>
-          Data streams
-        </Title>
+      <Space direction="vertical">
+        <Breadcrumb
+          items={[
+            {
+              title: "Home",
+              href: "/",
+            },
+            {
+              title: "Streams",
+            },
+          ]}
+        />
 
-        {
-          this.state.loading ? (
-            <LoadingState className="" />
-          ) : (
-            <GrouppedStreamsList
-              items={this.state.dataSources}
-            />
-          )
-        }
+        <Paragraph>
+          Streams are the core of your data collection pipeline.
+          Each stream corresponds to a table in your database, and ingest
+          endpoint is generated for each stream. Learn more about streams in
+          the <a>&ldquo;Documentation: Streams&rdquo;</a> chapter.
+        </Paragraph>
 
-        <Space style={{marginTop: "1rem"}}>
+        <Space>
           <Button
             type="primary"
             disabled={!allowCreation}
             onClick={
               allowCreation ? this.showCreateStreamDialog : undefined
             }
-          >
-            Add Stream
+            >
+              Add Stream
           </Button>
         </Space>
-      </div>
+
+        {
+          this.state.loading ? (
+            <LoadingState className="" />
+          ) : (
+            this.state.dataSources.map((dataSource) =>
+              <div
+                key={`data-source-${dataSource.id}`}
+              >
+                <DatabaseTitleItem
+                  item={dataSource}
+                  title={{
+                    level: 3,
+                    style: {marginTop: ".5rem"}
+                  }}
+                />
+                <StreamsList
+                  items={dataSource.streams}
+                />
+              </div>
+            )
+          )
+        }
+      </Space>
     );
   }
 }
-
-const StreamsListPage = StreamsList;
 
 routes.register(
   "Streams.List",
@@ -124,7 +153,7 @@ routes.register(
     path: "/streams",
     title: "Streams",
     render: (pageProps) => (
-      <StreamsListPage {...pageProps} />
+      <StreamsPage {...pageProps} />
     ),
   })
 );
