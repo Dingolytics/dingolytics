@@ -221,7 +221,7 @@ function QuerySource(props) {
             href: "/queries",
           },
           {
-            title: "New query",
+            title: query.isNew() ? "New query" : "Edit query",
           },
         ]}
       />
