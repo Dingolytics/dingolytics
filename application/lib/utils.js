@@ -3,7 +3,7 @@ import { kebabCase } from "@lodash";
 import { clientConfig } from "@/services/auth";
 
 export const IntervalEnum = {
-  NEVER: "Never",
+  NEVER: "-",
   SECONDS: "second",
   MINUTES: "minute",
   HOURS: "hour",
@@ -13,6 +13,7 @@ export const IntervalEnum = {
 };
 
 export const AbbreviatedTimeUnits = {
+  NEVER: "-",
   SECONDS: "s",
   MINUTES: "m",
   HOURS: "h",
@@ -56,27 +57,27 @@ export function localizeTime(time) {
     .format("HH:mm");
 }
 
-export function secondsToInterval(count) {
+export function secondsToInterval(count, INTERVALS = IntervalEnum) {
   if (!count) {
-    return { interval: IntervalEnum.NEVER };
+    return { interval: INTERVALS.NEVER };
   }
 
-  let interval = IntervalEnum.SECONDS;
+  let interval = INTERVALS.SECONDS;
   if (count >= 60) {
     count /= 60;
-    interval = IntervalEnum.MINUTES;
+    interval = INTERVALS.MINUTES;
   }
   if (count >= 60) {
     count /= 60;
-    interval = IntervalEnum.HOURS;
+    interval = INTERVALS.HOURS;
   }
-  if (count >= 24 && interval === IntervalEnum.HOURS) {
+  if (count >= 24 && interval === INTERVALS.HOURS) {
     count /= 24;
-    interval = IntervalEnum.DAYS;
+    interval = INTERVALS.DAYS;
   }
-  if (count >= 7 && !(count % 7) && interval === IntervalEnum.DAYS) {
+  if (count >= 7 && !(count % 7) && interval === INTERVALS.DAYS) {
     count /= 7;
-    interval = IntervalEnum.WEEKS;
+    interval = INTERVALS.WEEKS;
   }
   return { count, interval };
 }
@@ -90,13 +91,26 @@ export function durationHumanize(durationInSeconds, options = {}) {
   if (!durationInSeconds) {
     return "-";
   }
+
   let ret = "";
-  const { interval, count } = secondsToInterval(durationInSeconds);
-  const rounded = Math.round(count);
-  if (rounded !== 1 || !options.omitSingleValueNumber) {
-    ret = `${rounded} `;
+
+  if (options.short) {
+    const { interval, count } = secondsToInterval(
+      durationInSeconds, AbbreviatedTimeUnits
+    );
+    const rounded = Math.round(count);
+    return `${rounded}${interval}`;
+  } else {
+    const { interval, count } = secondsToInterval(
+      durationInSeconds, IntervalEnum
+    );
+    const rounded = Math.round(count);
+    if (rounded !== 1 || !options.omitSingleValueNumber) {
+      ret = `${rounded} `;
+    }
+    ret += pluralize(interval, rounded);
   }
-  ret += pluralize(interval, rounded);
+
   return ret;
 }
 

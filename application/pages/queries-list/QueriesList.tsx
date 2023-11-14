@@ -60,32 +60,54 @@ const onTabChange = (key: string) => {
 }
 
 const listColumns = [
-  Columns.favorites({ className: "p-r-0" }),
-  Columns.custom.sortable(
-    (text, item) => (
-      <React.Fragment>
-        <Link className="table-main-title" href={`/queries/${item.id}/source`}>
-          {item.name}
-        </Link>
-        <QueryTagsControl className="d-block" tags={item.tags} isDraft={item.is_draft} isArchived={item.is_archived} />
-      </React.Fragment>
-    ),
-    {
-      title: "Name",
-      field: "name",
-      width: null,
-    }
-  ),
-  Columns.custom((text, item) => item.user.name, { title: "Created By", width: "1%" }),
-  Columns.dateTime.sortable({ title: "Created At", field: "created_at", width: "1%" }),
-  Columns.dateTime.sortable({
-    title: "Last Executed At",
-    field: "retrieved_at",
-    orderByField: "executed_at",
-    // width: "1%",
+  // Columns.favorites({ className: "p-r-0" }),
+
+  Columns.custom.sortable((text, item) => (
+    <Link href={`/queries/${item.id}/source`}>
+      {item.name}
+    </Link>
+  ), {
+    title: "Name",
+    field: "name",
+    width: null,
   }),
-  Columns.custom.sortable((text, item) => <SchedulePhrase schedule={item.schedule} isNew={item.isNew()} />, {
-    title: "Refresh Schedule",
+
+  Columns.custom((text, item) => item.user.name, {
+    title: "Created By",
+    // width: "1%"
+  }),
+
+  Columns.dateTime.sortable(
+    { title: "Updated At",
+    field: "updated_at",
+    // width: "1%"
+  }),
+
+  // Columns.dateTime.sortable({
+  //   title: "Last Executed At",
+  //   field: "retrieved_at",
+  //   orderByField: "executed_at",
+  //   // width: "1%",
+  // }),
+
+  Columns.custom((text, item) => (
+    <QueryTagsControl
+      tags={item.tags}
+      isDraft={item.is_draft}
+      isArchived={item.is_archived}
+    />
+  ), {
+    title: "Tags",
+    // width: "1%"
+  }),
+
+  Columns.custom.sortable((text, item) => (
+    <SchedulePhrase
+      schedule={item.schedule}
+      isNew={item.isNew()}
+    />
+  ), {
+    title: "Refresh",
     field: "schedule",
     // width: "1%",
   }),

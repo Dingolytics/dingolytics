@@ -24,12 +24,13 @@ export default class SchedulePhrase extends React.Component {
   get content() {
     const { interval: seconds } = this.props.schedule || SchedulePhrase.defaultProps.schedule;
     if (!seconds) {
-      return ["Never"];
+      return ["-"];
     }
     const humanized = durationHumanize(seconds, {
-      omitSingleValueNumber: true,
+      omitSingleValueNumber: false, short: true,
     });
-    const short = `Every ${humanized}`;
+    // const short = `Every ${humanized}`;
+    const short = `${humanized}`;
     let full = `Refreshes every ${humanized}`;
 
     const { time, day_of_week: dayOfWeek } = this.props.schedule;
@@ -45,7 +46,7 @@ export default class SchedulePhrase extends React.Component {
 
   render() {
     if (this.props.isNew) {
-      return "Never";
+      return "-";
     }
 
     const [short, full] = this.content;
