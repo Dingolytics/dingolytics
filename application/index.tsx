@@ -20,12 +20,13 @@ function AppWithCallbackAfterRender() {
           Breadcrumb: {
             fontSize: 18,
           },
-          Button: {
-            colorPrimary: '#00b96b',
-          },
+          // Button: {
+          //   colorPrimary: '#00b96b',
+          // },
           Tabs: {
             lineWidth: 0,
             horizontalMargin: "0",
+            colorFillAlter: '#e8e8ef',
           }
           // Link: {
           //   colorPrimary: '#00b96b',
