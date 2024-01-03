@@ -17,9 +17,8 @@ import {
 // TODO: Load schema options from server
 const TABLE_SCHEMA_OPTIONS = [
   { label: "Application Events", value: "app_events" },
-  { label: "Raw Logs", value: "raw_logs" },
-  { label: "Web Logs", value: "web_logs" },
   { label: "Metrics", value: "metrics" },
+  { label: "Raw Logs", value: "raw_logs" },
 ]
 
 const CreateStreamDialog: React.FC<CreateDialogProps> = ({ dialog }) => {
