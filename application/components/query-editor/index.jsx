@@ -13,27 +13,21 @@ import "./index.less";
 const editorProps = { $blockScrolling: Infinity };
 
 const QueryEditor = React.forwardRef(function(
-  { className, syntax, value, autocompleteEnabled, schema, onChange, onSelectionChange, ...props },
+  {
+    className,
+    syntax,
+    value,
+    autocompleteEnabled,
+    schema,
+    onChange,
+    onSelectionChange,
+    ...props
+  },
   ref
 ) {
   const [container, setContainer] = useState(null);
+
   const [editorRef, setEditorRef] = useState(null);
-
-  // For some reason, value for AceEditor should be managed in
-  // this way - otherwise it goes berserk when selecting text
-  const [currentValue, setCurrentValue] = useState(value);
-
-  useEffect(() => {
-    setCurrentValue(value);
-  }, [value]);
-
-  const handleChange = useCallback(
-    (value) => {
-      setCurrentValue(value);
-      onChange(value);
-    },
-    [onChange]
-  );
 
   const editorOptions = useMemo(
     () => ({
@@ -70,14 +64,19 @@ const QueryEditor = React.forwardRef(function(
     }
   }, [container, editorRef]);
 
-  const handleSelectionChange = useCallback(
-    selection => {
-      const rawSelectedQueryText = editorRef.editor.session.doc.getTextRange(selection.getRange());
-      const selectedQueryText = rawSelectedQueryText.length > 1 ? rawSelectedQueryText : null;
-      onSelectionChange(selectedQueryText);
-    },
-    [editorRef, onSelectionChange]
-  );
+  //
+  // TODO: We might want to use this in the future, but for now
+  // let's turn it off to make editor more responsive! Less delay
+  // when typing is a crucial thing. Also selection tracking might
+  // be useful to add some AI-powered features like "Explain this..."
+  // or "Fix this...", etc.
+  //
+  // const handleSelectionChange = (selection) => {
+  //   console.log('selection', selection);
+  //   const rawSelectedQueryText = editorRef.editor.session.doc.getTextRange(selection.getRange());
+  //   const selectedQueryText = rawSelectedQueryText.length > 1 ? rawSelectedQueryText : null;
+  //   onSelectionChange(selectedQueryText);
+  // }
 
   const initEditor = useCallback(editor => {
     // Release Cmd/Ctrl+L to the browser
@@ -154,21 +153,25 @@ const QueryEditor = React.forwardRef(function(
   );
 
   return (
-    <div className={cx("query-editor-container", className)} {...props} ref={setContainer}>
+    <div
+      className={cx("query-editor-container", className)}
+      {...props}
+      ref={setContainer}
+    >
       <AceEditor
         ref={setEditorRef}
         theme="textmate"
         mode={syntax || "sql"}
-        value={currentValue}
+        value={value}
         editorProps={editorProps}
         width="100%"
         height="100%"
         setOptions={editorOptions}
         showPrintMargin={false}
         wrapEnabled={false}
+        onChange={onChange}
         onLoad={initEditor}
-        onChange={handleChange}
-        onSelectionChange={handleSelectionChange}
+        // onSelectionChange={handleSelectionChange}
       />
     </div>
   );

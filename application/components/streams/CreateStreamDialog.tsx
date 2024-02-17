@@ -19,6 +19,7 @@ const TABLE_SCHEMA_OPTIONS = [
   { label: "Application Events", value: "app_events" },
   { label: "Metrics", value: "metrics" },
   { label: "Raw Logs", value: "raw_logs" },
+  { label: "Internal Logs", value: "_internal_logs" },
 ]
 
 const CreateStreamDialog: React.FC<CreateDialogProps> = ({ dialog }) => {

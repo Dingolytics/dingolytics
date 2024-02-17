@@ -85,10 +85,10 @@ function QuerySource(props) {
 
   const handleQueryEditorChange = useDebouncedCallback(
     (queryText) => {
-      // console.log('queryText', queryText)
+      // console.log('queryText', queryText);
       setQuery(extend(query.clone(), { query: queryText }));
     },
-    100
+    50
   );
 
   useEffect(() => {
@@ -297,7 +297,7 @@ function QuerySource(props) {
                       ref={editorRef}
                       data-executing={isQueryExecuting ? "true" : null}
                       syntax={dataSource ? dataSource.syntax : null}
-                      value={query.query}
+                      value={`${query.query}`}
                       schema={schema}
                       autocompleteEnabled={autocompleteAvailable && autocompleteEnabled}
                       onChange={handleQueryEditorChange}
