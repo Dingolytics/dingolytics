@@ -20,10 +20,11 @@ export default function AutoLimitCheckbox({ available, checked, onChange }) {
   return (
     <Tooltip placement="top" title={tooltipMessage}>
       <Checkbox
-        className="query-editor-controls-checkbox"
+        style={{ alignItems: "center", marginLeft: 10 }}
         disabled={!available}
         onClick={handleClick}
-        checked={available && checked}>
+        checked={available && checked}
+      >
         LIMIT 1000
       </Checkbox>
     </Tooltip>

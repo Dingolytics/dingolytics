@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import cx from "classnames";
 import { useDebouncedCallback } from "use-debounce";
 import useMedia from "use-media";
-import { Breadcrumb, Button } from "antd"
+import { Breadcrumb, Button, Space } from "antd"
 
 import routeWithUserSession from "@/components/router/routeWithUserSession";
 import Resizable from "@/components/layouts/Resizable";
@@ -12,7 +12,7 @@ import Parameters from "@/components/parameters/Parameters";
 import EditInPlace from "@/components/general/EditInPlace";
 import DynamicComponent from "@/components/general/DynamicComponent";
 import recordEvent from "@/services/recordEvent";
-import { ExecutionStatus } from "@/services/query-result";
+// import { ExecutionStatus } from "@/services/query-result";
 import routes from "@/services/routes";
 import notification from "@/services/notification";
 import * as queryFormat from "@/lib/queryFormat";
@@ -287,8 +287,7 @@ function QuerySource(props) {
 
         <div className="content">
           <div className="flex-fill p-relative">
-            <div
-              className="p-absolute d-flex flex-column p-l-15 p-r-15"
+            <div className="p-absolute d-flex flex-column"
               style={{ left: 0, top: 0, right: 0, bottom: 0, overflow: "auto" }}>
               <Resizable direction="vertical" sizeAttribute="flex-basis">
                 <div className="row editor">

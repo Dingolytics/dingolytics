@@ -26,7 +26,7 @@ export default function AutocompleteToggle({ available, enabled, onToggle }) {
   return (
     <Tooltip placement="top" title={tooltipMessage}>
       <Button
-        className="query-editor-controls-button m-r-5"
+        type="default"
         disabled={!available}
         onClick={handleClick}
         aria-label={enabled ? "Disable live autocomplete" : "Enable live autocomplete"}>

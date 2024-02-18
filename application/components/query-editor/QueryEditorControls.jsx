@@ -2,12 +2,10 @@ import { isFunction, map, filter, fromPairs, noop } from "@lodash";
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import Tooltip from "@/components/general/Tooltip";
-import Button from "antd/lib/button";
-import Select from "antd/lib/select";
+import { Flex, Space, Button, Select } from "antd";
 import KeyboardShortcuts, { humanReadableShortcut } from "@/services/KeyboardShortcuts";
 
 import AutocompleteToggle from "./AutocompleteToggle";
-import "./QueryEditorControls.less";
 import AutoLimitCheckbox from "@/components/query-editor/AutoLimitCheckbox";
 
 export function ButtonTooltip({ title, shortcut, ...props }) {
@@ -56,12 +54,16 @@ export default function EditorControl({
     }
   }, [addParameterButtonProps, formatButtonProps, saveButtonProps, executeButtonProps]);
 
+  // className="query-editor-controls"
   return (
-    <div className="query-editor-controls">
+    <Flex justify="space-between" className="m-t-10">
+      <Flex gap="small">
       {addParameterButtonProps !== false && (
-        <ButtonTooltip title={addParameterButtonProps.title} shortcut={addParameterButtonProps.shortcut}>
+        <ButtonTooltip title={addParameterButtonProps.title}
+          shortcut={addParameterButtonProps.shortcut}
+        >
           <Button
-            className="query-editor-controls-button m-r-5"
+            type="default"
             disabled={addParameterButtonProps.disabled}
             onClick={addParameterButtonProps.onClick}>
             {"{{"}&nbsp;{"}}"}
@@ -69,13 +71,14 @@ export default function EditorControl({
         </ButtonTooltip>
       )}
       {formatButtonProps !== false && (
-        <ButtonTooltip title={formatButtonProps.title} shortcut={formatButtonProps.shortcut}>
+        <ButtonTooltip title={formatButtonProps.title}
+          shortcut={formatButtonProps.shortcut}
+        >
           <Button
-            className="query-editor-controls-button m-r-5"
+            type="default"
             disabled={formatButtonProps.disabled}
             onClick={formatButtonProps.onClick}>
-            <span className="zmdi zmdi-format-indent-increase" />
-            {formatButtonProps.text}
+            &lt; / &gt;
           </Button>
         </ButtonTooltip>
       )}
@@ -86,9 +89,10 @@ export default function EditorControl({
           onToggle={autocompleteToggleProps.onToggle}
         />
       )}
-      {autoLimitCheckboxProps !== false && <AutoLimitCheckbox {...autoLimitCheckboxProps} />}
-      {dataSourceSelectorProps === false && <span className="query-editor-controls-spacer" />}
-      {dataSourceSelectorProps !== false && (
+      {autoLimitCheckboxProps !== false && (
+        <AutoLimitCheckbox {...autoLimitCheckboxProps} />
+      )}
+      {/*dataSourceSelectorProps !== false && (
         <Select
           className="w-100 flex-fill datasource-small"
           disabled={dataSourceSelectorProps.disabled}
@@ -100,34 +104,39 @@ export default function EditorControl({
             </Select.Option>
           ))}
         </Select>
-      )}
-      {saveButtonProps !== false && (
-        <ButtonTooltip title={saveButtonProps.title} shortcut={saveButtonProps.shortcut}>
-          <Button
-            className="query-editor-controls-button m-l-5"
-            disabled={saveButtonProps.disabled}
-            loading={saveButtonProps.loading}
-            onClick={saveButtonProps.onClick}
-            data-test="SaveButton">
-            {!saveButtonProps.loading && <span className="fa fa-floppy-o" />}
-            {saveButtonProps.text}
-          </Button>
-        </ButtonTooltip>
-      )}
-      {executeButtonProps !== false && (
-        <ButtonTooltip title={executeButtonProps.title} shortcut={executeButtonProps.shortcut}>
-          <Button
-            className="query-editor-controls-button m-l-5"
-            type="primary"
-            disabled={executeButtonProps.disabled}
-            onClick={executeButtonProps.onClick}
-            data-test="ExecuteButton">
-            <span className="zmdi zmdi-play" />
-            {executeButtonProps.text}
-          </Button>
-        </ButtonTooltip>
-      )}
-    </div>
+      )*/}
+      </Flex>
+      <Flex gap="small">
+        {saveButtonProps !== false && (
+          <ButtonTooltip title={saveButtonProps.title}
+            shortcut={saveButtonProps.shortcut}
+          >
+            <Button
+              size="large"
+              disabled={saveButtonProps.disabled}
+              loading={saveButtonProps.loading}
+              onClick={saveButtonProps.onClick}
+              data-test="SaveButton">
+              {saveButtonProps.text}
+            </Button>
+          </ButtonTooltip>
+        )}
+        {executeButtonProps !== false && (
+          <ButtonTooltip title={executeButtonProps.title}
+            shortcut={executeButtonProps.shortcut}
+          >
+            <Button
+              type="primary"
+              size="large"
+              disabled={executeButtonProps.disabled}
+              onClick={executeButtonProps.onClick}
+              data-test="ExecuteButton">
+              {executeButtonProps.text}
+            </Button>
+          </ButtonTooltip>
+        )}
+      </Flex>
+    </Flex>
   );
 }
 
