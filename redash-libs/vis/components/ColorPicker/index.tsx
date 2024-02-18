@@ -108,7 +108,7 @@ export default function ColorPicker({
     <span className="color-picker-wrapper">
       {addonBefore}
       <Popover
-        arrowPointAtCenter
+        arrow={{ pointAtCenter: true }}
         overlayClassName={`color-picker ${interactive ? "color-picker-interactive" : "color-picker-with-actions"}`}
         // @ts-expect-error ts-migrate(2322) FIXME: Type '{ "--color-picker-selected-color": string; }... Remove this comment to see the full error message
         overlayStyle={{ "--color-picker-selected-color": currentColor }}

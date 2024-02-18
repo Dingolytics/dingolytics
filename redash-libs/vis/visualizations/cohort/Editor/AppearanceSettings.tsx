@@ -33,7 +33,7 @@ export default function AppearanceSettings({ options, onOptionsChange }: any) {
           label={
             <React.Fragment>
               Stage Column Title
-              <ContextHelp placement="topRight" arrowPointAtCenter>
+              <ContextHelp placement="topRight" arrow={{ pointAtCenter: true }}>
                 {/* @ts-expect-error ts-migrate(2322) FIXME: Type 'Element' is not assignable to type 'null | u... Remove this comment to see the full error message */}
                 <div>
                   Use <code>{"{{ @ }}"}</code> to insert a stage number

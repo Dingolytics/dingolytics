@@ -38,7 +38,7 @@ function Editor({ column, onChange }: Props) {
             <React.Fragment>
               Size
               {/* @ts-expect-error ts-migrate(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
-              <ContextHelp placement="topLeft" arrowPointAtCenter>
+              <ContextHelp placement="topLeft" arrow={{ pointAtCenter: true }}>
                 <div style={{ marginBottom: 5 }}>Any positive integer value that specifies size in pixels.</div>
                 <div>Leave empty to use default value.</div>
               </ContextHelp>
@@ -78,7 +78,7 @@ function Editor({ column, onChange }: Props) {
         {/* @ts-expect-error ts-migrate(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
         <ContextHelp
           placement="topLeft"
-          arrowPointAtCenter
+          arrow={{ pointAtCenter: true }}
           // @ts-expect-error ts-migrate(2322) FIXME: Type 'Element' is not assignable to type 'null | u... Remove this comment to see the full error message
           icon={<span style={{ cursor: "default" }}>Format specs {ContextHelp.defaultIcon}</span>}>
           <div>

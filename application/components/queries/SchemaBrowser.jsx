@@ -59,7 +59,7 @@ function SchemaItem({ item, expanded, onToggle, onSelect, ...props }) {
           mouseEnterDelay={0}
           mouseLeaveDelay={0}
           placement="topRight"
-          arrowPointAtCenter>
+          arrow={{ pointAtCenter: true }}>
           <PlainButton className="copy-to-editor" onClick={e => handleSelect(e, item.name)}>
             <i className="fa fa-angle-double-right" aria-hidden="true" />
           </PlainButton>

@@ -126,7 +126,7 @@ export default function StyleSettings({ options, onOptionsChange }: any) {
         </Checkbox>
         {!isCustomMarkersStyleAllowed && (
           // @ts-expect-error ts-migrate(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message
-          <ContextHelp placement="topLeft" arrowPointAtCenter>
+          <ContextHelp placement="topLeft" arrow={{ pointAtCenter: true }}>
             Custom marker styles are not available
             <br />
             when <b>Group By</b> column selected.
@@ -186,7 +186,7 @@ export default function StyleSettings({ options, onOptionsChange }: any) {
                   <React.Fragment>
                     Icon
                     {/* @ts-expect-error ts-migrate(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
-                    <ContextHelp placement="topLeft" arrowPointAtCenter>
+                    <ContextHelp placement="topLeft" arrow={{ pointAtCenter: true }}>
                       <div style={{ marginBottom: 5 }}>
                         Enter an icon name from{" "}
                         <a href="https://fontawesome.com/v4.7.0/icons/" target="_blank" rel="noopener noreferrer">

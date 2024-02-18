@@ -78,7 +78,7 @@ export default function DataLabelsSettings({ options, onOptionsChange }: any) {
             <React.Fragment>
               Data Labels
               {/* @ts-expect-error ts-migrate(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
-              <ContextHelp placement="topRight" arrowPointAtCenter>
+              <ContextHelp placement="topRight" arrow={{ pointAtCenter: true }}>
                 <div style={{ paddingBottom: 5 }}>Use special names to access additional properties:</div>
                 <div>
                   <code>{"{{ @@name }}"}</code> series name;
