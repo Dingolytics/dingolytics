@@ -1,6 +1,7 @@
 import { size, filter, forEach, extend } from "@lodash";
 import React from "react";
 import PropTypes from "prop-types";
+import { Flex, Space, Divider } from "antd";
 import { SortableContainer, SortableElement, DragHandle } from "@redash/vis/components/sortable";
 import location from "@/services/location";
 import { Parameter, createParameter } from "@/services/parameters";
@@ -120,31 +121,22 @@ export default class Parameters extends React.Component {
   };
 
   renderParameter(param, index) {
-    const { editable } = this.props;
     return (
-      <div key={param.name} className="di-block" data-test={`ParameterName-${param.name}`}>
-        <div className="parameter-heading">
-          <label>{param.title || toHuman(param.name)}</label>
-          {editable && (
-            <PlainButton
-              className="btn btn-default btn-xs m-l-5"
-              aria-label="Edit"
-              onClick={() => this.showParameterSettings(param, index)}
-              data-test={`ParameterSettings-${param.name}`}
-              type="button">
-              <i className="fa fa-cog" aria-hidden="true" />
-            </PlainButton>
-          )}
-        </div>
+      <Flex key={param.name} align="center"
+         data-test={`ParameterName-${param.name}`}
+      >
+        <label>{param.title || toHuman(param.name)}&nbsp;=&nbsp;</label>
         <ParameterValueInput
           type={param.type}
           value={param.normalizedValue}
           parameter={param}
           enumOptions={param.enumOptions}
           queryId={param.queryId}
-          onSelect={(value, isDirty) => this.setPendingValue(param, value, isDirty)}
+          onSelect={
+            (value, isDirty) => this.setPendingValue(param, value, isDirty)
+          }
         />
-      </div>
+      </Flex>
     );
   }
 
@@ -154,32 +146,17 @@ export default class Parameters extends React.Component {
     const dirtyParamCount = size(filter(parameters, "hasPendingValue"));
 
     return (
-      <SortableContainer
-        disabled={!sortable}
-        axis="xy"
-        useDragHandle
-        lockToContainerEdges
-        helperClass="parameter-dragged"
-        helperContainer={containerEl => (appendSortableToParent ? containerEl : document.body)}
-        updateBeforeSortStart={this.onBeforeSortStart}
-        onSortEnd={this.moveParameter}
-        containerProps={{
-          className: "parameter-container",
-          onKeyDown: dirtyParamCount ? this.handleKeyDown : null,
-        }}>
-        {parameters.map((param, index) => (
-          <SortableElement key={param.name} index={index}>
-            <div
-              className="parameter-block"
-              data-editable={sortable || null}
-              data-test={`ParameterBlock-${param.name}`}>
-              {sortable && <DragHandle data-test={`DragHandle-${param.name}`} />}
-              {this.renderParameter(param, index)}
-            </div>
-          </SortableElement>
-        ))}
-        <ParameterApplyButton onClick={this.applyChanges} paramCount={dirtyParamCount} />
-      </SortableContainer>
+      <Flex vertical gap="small" className="m-b-10">
+        {
+          parameters.map(
+            (param, index) => this.renderParameter(param, index)
+          )
+        }
+        <ParameterApplyButton
+          onClick={this.applyChanges}
+          paramCount={dirtyParamCount}
+        />
+      </Flex>
     );
   }
 }

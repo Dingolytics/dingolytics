@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import cx from "classnames";
 import { useDebouncedCallback } from "use-debounce";
 import useMedia from "use-media";
-import { Breadcrumb, Button, Space } from "antd"
+import { Breadcrumb, Button, Flex, Col, Row } from "antd"
 
 import routeWithUserSession from "@/components/router/routeWithUserSession";
 import Resizable from "@/components/layouts/Resizable";
@@ -365,28 +365,26 @@ function QuerySource(props) {
 
               {!queryFlags.isNew && <QueryMetadata layout="horizontal" query={query} onEditSchedule={editSchedule} />}
 
-              <section className="query-results-wrapper">
+              <section className="m-t-15 p-r-15 p-l-15">
                 {query.hasParameters() && (
-                  <div className="query-parameters-wrapper">
-                    <Parameters
-                      editable={queryFlags.canEdit}
-                      sortable={queryFlags.canEdit}
-                      disableUrlUpdate={queryFlags.isNew}
-                      parameters={parameters}
-                      onPendingValuesChange={() => updateParametersDirtyFlag()}
-                      onValuesChange={() => {
-                        updateParametersDirtyFlag(false);
-                        doExecuteQuery(true);
-                      }}
-                      onParametersEdit={() => {
-                        // save if query clean
-                        // https://discuss.redash.io/t/query-unsaved-changes-indication/3302/5
-                        if (!isDirty) {
-                          saveQuery();
-                        }
-                      }}
-                    />
-                  </div>
+                  <Parameters
+                    editable={queryFlags.canEdit}
+                    sortable={queryFlags.canEdit}
+                    disableUrlUpdate={queryFlags.isNew}
+                    parameters={parameters}
+                    onPendingValuesChange={() => updateParametersDirtyFlag()}
+                    onValuesChange={() => {
+                      updateParametersDirtyFlag(false);
+                      doExecuteQuery(true);
+                    }}
+                    onParametersEdit={() => {
+                      // save if query clean
+                      // https://discuss.redash.io/t/query-unsaved-changes-indication/3302/5
+                      if (!isDirty) {
+                        saveQuery();
+                      }
+                    }}
+                  />
                 )}
                 {(executionError || isQueryExecuting) && (
                   <div className="query-alerts">
