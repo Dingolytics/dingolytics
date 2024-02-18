@@ -416,7 +416,7 @@ function QuerySource(props) {
                     <QueryVisualizationTabs
                       queryResult={queryResult}
                       visualizations={query.visualizations}
-                      showNewVisualizationButton={queryFlags.canEdit && queryResultData.status === ExecutionStatus.DONE}
+                      showNewVisualizationButton={false/*queryFlags.canEdit && queryResultData.status === ExecutionStatus.DONE*/}
                       canDeleteVisualizations={queryFlags.canEdit}
                       selectedTab={selectedVisualization}
                       onChangeTab={setSelectedVisualization}
