@@ -3,15 +3,17 @@ import cx from "classnames";
 import React, { useState, useCallback, useMemo, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useDebouncedCallback } from "use-debounce";
-import Input from "antd/lib/input";
-import Button from "antd/lib/button";
+import { Input, Button, Tooltip, Flex, Typography } from "antd";
 import AutoSizer from "react-virtualized/dist/commonjs/AutoSizer";
 import List from "react-virtualized/dist/commonjs/List";
 import PlainButton from "@/components/general/PlainButton";
-import Tooltip from "@/components/general/Tooltip";
+// import Tooltip from "@/components/general/Tooltip";
+import { RefreshIcon } from "@/components/icons";
 import useDataSourceSchema from "@/pages/queries/hooks/useDataSourceSchema";
 import useImmutableCallback from "@/lib/hooks/useImmutableCallback";
 import LoadingState from "../items-list/components/LoadingState";
+
+const { Text } = Typography;
 
 const SchemaItemColumnType = PropTypes.shape({
   name: PropTypes.string.isRequired,
@@ -25,7 +27,7 @@ export const SchemaItemType = PropTypes.shape({
   columns: PropTypes.arrayOf(SchemaItemColumnType).isRequired,
 });
 
-const schemaTableHeight = 22;
+const schemaTableHeight = 24;
 const schemaColumnHeight = 18;
 
 function SchemaItem({ item, expanded, onToggle, onSelect, ...props }) {
@@ -45,26 +47,24 @@ function SchemaItem({ item, expanded, onToggle, onSelect, ...props }) {
   const tableDisplayName = item.displayName || item.name;
 
   return (
-    <div {...props}>
-      <div className="schema-list-item">
-        <PlainButton className="table-name" onClick={onToggle}>
-          <i className="fa fa-table m-r-5" aria-hidden="true" />
-          <strong>
-            <span title={item.name}>{tableDisplayName}</span>
-            {!isNil(item.size) && <span> ({item.size})</span>}
-          </strong>
-        </PlainButton>
-        <Tooltip
-          title="Insert table name into query text"
-          mouseEnterDelay={0}
-          mouseLeaveDelay={0}
-          placement="topRight"
-          arrow={{ pointAtCenter: true }}>
-          <PlainButton className="copy-to-editor" onClick={e => handleSelect(e, item.name)}>
-            <i className="fa fa-angle-double-right" aria-hidden="true" />
-          </PlainButton>
-        </Tooltip>
-      </div>
+    <Flex vertical key={item.name} {...props}>
+      <PlainButton onClick={onToggle}>
+        <Text ellipsis={true} strong={true}>
+          <Tooltip
+            title="Insert table name"
+            mouseEnterDelay={0}
+            mouseLeaveDelay={0}
+            placement="top"
+            arrow={{ pointAtCenter: true }}>
+            <Text
+              type="secondary"
+              onClick={e => handleSelect(e, item.name)}
+            >[&raquo;] </Text>
+          </Tooltip>
+          <span title={item.name}>{tableDisplayName}</span>
+          {!isNil(item.size) && <span> ({item.size})</span>}
+        </Text>
+      </PlainButton>
       {expanded && (
         <div className="table-open">
           {item.loading ? (
@@ -73,28 +73,36 @@ function SchemaItem({ item, expanded, onToggle, onSelect, ...props }) {
             map(item.columns, column => {
               const columnName = get(column, "name");
               const columnType = get(column, "type");
+              return columnName ? (
+                <div key={`${item.name}-${columnName}`}>
+                  &nbsp;&nbsp;.{columnName}
+                  {columnType && <span className="column-type">{columnType}</span>}
+                </div>
+              ) : null;
+              /*
               return (
                 <Tooltip
                   title="Insert column name into query text"
                   mouseEnterDelay={0}
                   mouseLeaveDelay={0}
                   placement="rightTop">
-                  <PlainButton key={columnName} className="table-open-item" onClick={e => handleSelect(e, columnName)}>
-                    <div>
-                      {columnName} {columnType && <span className="column-type">{columnType}</span>}
-                    </div>
-
-                    <div className="copy-to-editor">
-                      <i className="fa fa-angle-double-right" aria-hidden="true" />
-                    </div>
-                  </PlainButton>
+                  <div>
+                    <PlainButton key={columnName}
+                      className="table-open-item"
+                      onClick={e => handleSelect(e, columnName)}
+                    >
+                      {columnName}
+                      {columnType && <span className="column-type">{columnType}</span>}
+                    </PlainButton>
+                  </div>
                 </Tooltip>
               );
+              */
             })
           )}
         </div>
       )}
-    </div>
+    </Flex>
   );
 }
 
@@ -151,7 +159,7 @@ export function SchemaList({ loading, schema, expandedFlags, onTableExpand, onIt
                 return (
                   <SchemaItem
                     key={key}
-                    style={style}
+                    // style={style}
                     item={item}
                     expanded={expandedFlags[item.name]}
                     onToggle={() => onTableExpand(item.name)}
@@ -247,10 +255,15 @@ export default function SchemaBrowser({
           onChange={event => handleFilterChange(event.target.value)}
         />
 
-        <Tooltip title="Refresh Schema">
-          <Button onClick={() => refreshSchema(true)}>
-            <i className={cx("zmdi zmdi-refresh", { "zmdi-hc-spin": isLoading })} aria-hidden="true" />
-            <span className="sr-only">{isLoading ? "Loading, please wait." : "Press to refresh."}</span>
+        <Tooltip title="Refresh schema">
+          <Button onClick={() => refreshSchema(true)} disabled={isLoading}>
+            <Text type="secondary">
+              {
+                isLoading ? "Reloading..." : <RefreshIcon size={18} />
+              }
+            </Text>
+            {/* <i className={cx("zmdi zmdi-refresh", { "zmdi-hc-spin": isLoading })} aria-hidden="true" />
+            <span className="sr-only">{isLoading ? "Loading, please wait." : "Press to refresh."}</span> */}
           </Button>
         </Tooltip>
       </div>
