@@ -2587,6 +2587,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react-virtualized@npm:^9.21.29":
+  version: 9.21.29
+  resolution: "@types/react-virtualized@npm:9.21.29"
+  dependencies:
+    "@types/prop-types": "*"
+    "@types/react": "*"
+  checksum: df10e8847e20ac2b4bac647a9bfc027edbc73ff41e298024de7b8588e0d8e9b220ba7d65231fced9ca9eb5284a1d6a478ec934f950f33795baed586bd0e30ea0
+  languageName: node
+  linkType: hard
+
 "@types/react@npm:*, @types/react@npm:^18.0.28":
   version: 18.2.0
   resolution: "@types/react@npm:18.2.0"
@@ -10118,6 +10128,7 @@ __metadata:
     "@types/react-dom": ^18.0.11
     "@types/react-resizable": ^3.0.3
     "@types/react-syntax-highlighter": ^15.5.7
+    "@types/react-virtualized": ^9.21.29
     "@typescript-eslint/eslint-plugin": ^5.53.0
     "@typescript-eslint/parser": ^5.53.0
     ace-builds: ^1.15.2
