@@ -131,7 +131,7 @@ class DestinationsList extends React.Component {
   }
 }
 
-const DestinationsListPage = wrapSettingsTab(
+/*const DestinationsListPage = wrapSettingsTab(
   "AlertDestinations.List",
   {
     permission: "admin",
@@ -140,7 +140,7 @@ const DestinationsListPage = wrapSettingsTab(
     order: 4,
   },
   DestinationsList
-);
+);*/
 
 routes.register(
   "AlertDestinations.List",
@@ -150,6 +150,7 @@ routes.register(
     render: pageProps => <DestinationsListPage {...pageProps} />,
   })
 );
+
 routes.register(
   "AlertDestinations.New",
   routeWithUserSession({
