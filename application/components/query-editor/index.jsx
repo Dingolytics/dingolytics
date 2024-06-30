@@ -5,7 +5,6 @@ import { AceEditor, snippetsModule, updateSchemaCompleter } from "./ace";
 import { srNotify } from "@/lib/accessibility";
 import { SchemaItemType } from "@/components/queries/SchemaBrowser";
 import resizeObserver from "@/services/resizeObserver";
-import QuerySnippet from "@/services/query-snippet";
 
 import QueryEditorControls from "./QueryEditorControls";
 import "./index.less";
@@ -114,18 +113,6 @@ const QueryEditor = React.forwardRef(function(
       if (e.command.name === "insertstring" && e.args === "." && editor.completer) {
         editor.completer.showPopup(editor);
       }
-    });
-
-    QuerySnippet.query().then(snippets => {
-      const snippetManager = snippetsModule.snippetManager;
-      const m = {
-        snippetText: "",
-      };
-      m.snippets = snippetManager.parseSnippetFile(m.snippetText);
-      snippets.forEach(snippet => {
-        m.snippets.push(snippet.getSnippet());
-      });
-      snippetManager.register(m.snippets || [], m.scope);
     });
 
     editor.focus();
