@@ -90,7 +90,7 @@ const location = {
 };
 
 function locationChanged() {
-  console.log('locationChanged', history.location)
+  // console.log('locationChanged', history.location)
   extend(location, normalizeLocation(history.location));
 }
 

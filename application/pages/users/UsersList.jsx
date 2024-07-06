@@ -1,10 +1,8 @@
-import { isString, map, get, find } from "@lodash";
+import { debounce, isString, map, get, find } from "@lodash";
 import React from "react";
 import PropTypes from "prop-types";
 
-import Button from "antd/lib/button";
-import Modal from "antd/lib/modal";
-import routeWithUserSession from "@/components/router/routeWithUserSession";
+import { Button, Input, Modal, Radio, Space, Tag } from "antd";
 import Link from "@/components/general/Link";
 import Paginator from "@/components/general/Paginator";
 import DynamicComponent from "@/components/general/DynamicComponent";
@@ -23,10 +21,13 @@ import ItemsTable, { Columns } from "@/components/items-list/components/ItemsTab
 import Layout from "@/components/layouts/ContentWithSidebar";
 import wrapSettingsTab from "@/components/settings/SettingsWrapper";
 
+import routeWithUserSession from "@/components/router/routeWithUserSession";
+import { stripBase } from "@/components/router/Router";
+import navigateTo from "@/components/router/navigateTo";
+
 import { currentUser } from "@/services/auth";
 import { policy } from "@/services/policy";
 import User from "@/services/user";
-import navigateTo from "@/components/router/navigateTo";
 import notification from "@/services/notification";
 import { absoluteUrl } from "@/services/utils";
 import routes from "@/services/routes";
@@ -71,25 +72,6 @@ class UsersList extends React.Component {
     controller: ControllerType.isRequired,
   };
 
-  sidebarMenu = [
-    {
-      key: "active",
-      href: "users",
-      title: "Active Users",
-    },
-    {
-      key: "pending",
-      href: "users/pending",
-      title: "Pending Invitations",
-    },
-    {
-      key: "disabled",
-      href: "users/disabled",
-      title: "Disabled Users",
-      isAvailable: () => policy.canCreateUser(),
-    },
-  ];
-
   listColumns = [
     Columns.custom.sortable((text, user) => <UserPreviewCard user={user} withLink />, {
       title: "Name",
@@ -99,9 +81,11 @@ class UsersList extends React.Component {
     Columns.custom.sortable(
       (text, user) =>
         map(user.groups, group => (
-          <Link key={"group" + group.id} className="label label-tag" href={"groups/" + group.id}>
-            {group.name}
-          </Link>
+          <Tag>
+            <Link key={"group" + group.id} href={"groups/" + group.id}>
+              {group.name}
+            </Link>
+          </Tag>
         )),
       {
         title: "Groups",
@@ -112,13 +96,13 @@ class UsersList extends React.Component {
       title: "Joined",
       field: "created_at",
       className: "text-nowrap",
-      width: "1%",
+      //width: "1%",
     }),
     Columns.timeAgo.sortable({
       title: "Last Active At",
       field: "active_at",
       className: "text-nowrap",
-      width: "1%",
+      //width: "1%",
     }),
     Columns.custom(
       (text, user) => (
@@ -191,60 +175,62 @@ class UsersList extends React.Component {
 
   // eslint-disable-next-line class-methods-use-this
   renderPageHeader() {
-    if (!policy.canCreateUser()) {
-      return null;
-    }
+    const path = stripBase(location.pathname).replace(/^\//, '');
     return (
-      <div className="m-b-15">
-        <Button type="primary" disabled={!policy.isCreateUserEnabled()} onClick={this.showCreateUserDialog}>
-          <i className="fa fa-plus m-r-5" aria-hidden="true" />
+      <Space direction="horizontal">
+        <Radio.Group value={path} onChange={(e) => navigateTo(e.target.value)}>
+          <Radio.Button value="users">Active</Radio.Button>
+          <Radio.Button value="users/pending">Invited</Radio.Button>
+          <Radio.Button value="users/disabled">Disabled</Radio.Button>
+        </Radio.Group>
+
+        <Button type="primary"
+          disabled={!policy.isCreateUserEnabled()}
+          onClick={this.showCreateUserDialog}
+        >
           New User
         </Button>
-        <DynamicComponent name="UsersListExtra" />
-      </div>
+      </Space>
     );
   }
 
   render() {
     const { controller } = this.props;
     return (
-      <React.Fragment>
-        {this.renderPageHeader()}
-        <Layout>
-          <Layout.Sidebar className="m-b-0">
-            <Sidebar.SearchInput
-              value={controller.searchTerm}
-              onChange={controller.updateSearch}
-              label="Search users"
+      <Space direction="vertical" style={{display: "flex"}}>
+        <div>
+          {this.renderPageHeader()}
+        </div>
+
+        <Input.Search
+          value={controller.searchTerm}
+          onChange={(e) => controller.updateSearch(e.target.value)}
+          placeholder="Search users..."
+        />
+
+        {!controller.isLoaded && <LoadingState className="" />}
+        {controller.isLoaded && controller.isEmpty && <EmptyState className="" />}
+        {controller.isLoaded && !controller.isEmpty && (
+          <div className="table-responsive" data-test="UserList">
+            <ItemsTable
+              items={controller.pageItems}
+              columns={this.listColumns}
+              context={this.actions}
+              orderByField={controller.orderByField}
+              orderByReverse={controller.orderByReverse}
+              toggleSorting={controller.toggleSorting}
             />
-            <Sidebar.Menu items={this.sidebarMenu} selected={controller.params.currentPage} />
-          </Layout.Sidebar>
-          <Layout.Content>
-            {!controller.isLoaded && <LoadingState className="" />}
-            {controller.isLoaded && controller.isEmpty && <EmptyState className="" />}
-            {controller.isLoaded && !controller.isEmpty && (
-              <div className="table-responsive" data-test="UserList">
-                <ItemsTable
-                  items={controller.pageItems}
-                  columns={this.listColumns}
-                  context={this.actions}
-                  orderByField={controller.orderByField}
-                  orderByReverse={controller.orderByReverse}
-                  toggleSorting={controller.toggleSorting}
-                />
-                <Paginator
-                  showPageSizeSelect
-                  totalCount={controller.totalItemsCount}
-                  pageSize={controller.itemsPerPage}
-                  onPageSizeChange={itemsPerPage => controller.updatePagination({ itemsPerPage })}
-                  page={controller.page}
-                  onChange={page => controller.updatePagination({ page })}
-                />
-              </div>
-            )}
-          </Layout.Content>
-        </Layout>
-      </React.Fragment>
+            <Paginator
+              showPageSizeSelect
+              totalCount={controller.totalItemsCount}
+              pageSize={controller.itemsPerPage}
+              onPageSizeChange={itemsPerPage => controller.updatePagination({ itemsPerPage })}
+              page={controller.page}
+              onChange={page => controller.updatePagination({ page })}
+            />
+          </div>
+        )}
+      </Space>
     );
   }
 }
