@@ -25,6 +25,7 @@ import { Parameter, createParameter } from "./parameters";
 import { currentUser } from "./auth";
 import QueryResult from "./query-result";
 import localOptions from "@/lib/localOptions";
+import { List } from "lodash";
 
 Mustache.escape = identity; // do not html-escape values
 
@@ -43,10 +44,10 @@ export type QueryType = {
   // ...
 }
 
-function collectParams(parts) {
-  let parameters = [];
+function collectParams(parts: any[][]) {
+  let parameters: Array<any> = [];
 
-  parts.forEach(part => {
+  parts.forEach((part: any[]) => {
     if (part[0] === "name" || part[0] === "&") {
       parameters.push(part[1].split(".")[0]);
     } else if (part[0] === "#") {

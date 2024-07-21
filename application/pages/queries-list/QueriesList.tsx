@@ -5,7 +5,6 @@ import type { TabsProps } from "antd";
 import navigateTo from "@/components/router/navigateTo";
 import routeWithUserSession from "@/components/router/routeWithUserSession";
 import Link from "@/components/general/Link";
-// import PageHeader from "@/components/general/PageHeader";
 import Paginator from "@/components/general/Paginator";
 import DynamicComponent from "@/components/general/DynamicComponent";
 import { QueryTagsControl } from "@/components/tags/TagsControl";
@@ -15,14 +14,9 @@ import { wrap as itemsList, ControllerType } from "@/components/items-list/Items
 import useItemsListExtraActions from "@/components/items-list/hooks/useItemsListExtraActions";
 import { ResourceItemsSource } from "@/components/items-list/classes/ItemsSource";
 import { UrlStateStorage } from "@/components/items-list/classes/StateStorage";
-
-// import * as Sidebar from "@/components/items-list/components/Sidebar";
 import ItemsTable, { Columns } from "@/components/items-list/components/ItemsTable";
 
-// import Layout from "@/components/layouts/ContentWithSidebar";
-
 import { Query } from "@/services/query";
-// import { currentUser } from "@/services/auth";
 import location from "@/services/location";
 import routes from "@/services/routes";
 
@@ -72,7 +66,7 @@ const listColumns = [
     width: null,
   }),
 
-  Columns.custom((text, item) => item.user.name, {
+  Columns.custom((text: String, item: { user: { name: String; }; }) => item.user.name, {
     title: "Created By",
     // width: "1%"
   }),
