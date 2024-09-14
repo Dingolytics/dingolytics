@@ -18,7 +18,6 @@ import DataSource, { annotateWithStreams } from "@/services/data-source";
 import routes from "@/services/routes";
 import { policy } from "@/services/policy";
 import Stream, { StreamType } from "@/services/stream";
-import { style } from "d3";
 
 /** Type definitions */
 type StreamsPageProps = {

@@ -7,6 +7,8 @@ import "./admin/SystemStatus"
 import "./alerts/AlertsList"
 import "./alert/Alert"
 
+import "./endpoints/EndpointsPage"
+
 import "./dashboards/DashboardList"
 import "./dashboards/DashboardPage"
 import "./dashboards/PublicDashboardPage"
