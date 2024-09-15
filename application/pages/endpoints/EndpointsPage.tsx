@@ -60,10 +60,9 @@ class EndpointsPage extends Component<EndpointsPageProps, EndpointsPageState> {
         />
 
         <Paragraph>
-          Streams are the core of your data collection pipeline.
-          Each stream corresponds to a table in your database, and ingest
-          endpoint is generated for each stream. Learn more about streams in
-          the <a>&ldquo;Documentation / Streams&rdquo;</a> chapter.
+          Endpoints expose published query results for various use cases, such as view counters,
+          monitoring, and product metrics.
+          <br />Learn more in the <a>&ldquo;Documentation / Endpoints&rdquo;</a> chapter.
         </Paragraph>
 
         {

@@ -168,8 +168,9 @@ function QueriesList({ controller }) {
         />
 
         <Paragraph>
-          Queries are written in ClickHouse SQL and are used to generate
-          reports and dynamics widgets.
+          Queries are written in ClickHouse SQL and are used to explore data,
+          generate reports and publish endpoints.
+          <br />Learn more in the <a>&ldquo;Documentation / Queries&rdquo;</a> chapter.
         </Paragraph>
 
         <div>
