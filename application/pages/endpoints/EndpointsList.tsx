@@ -4,6 +4,7 @@ import { Table, Typography, Button } from "antd";
 import type { ColumnsType } from "antd/es/table";
 const { Text } = Typography;
 
+import Link from "@/components/general/Link";
 import { EndpointType } from "@/services/EndpointsService";
 import navigateTo from "@/components/router/navigateTo";
 
@@ -17,7 +18,7 @@ const endpointsColumns: ColumnsType<EndpointType> = [
     dataIndex: "name",
     key: "name",
     "width": "35%",
-    render: (_, item) => <Text strong>{item.name}</Text>
+    render: (_, item) => <Link href={`/endpoints/${item.id}`}>{item.name}</Link>
   },
   {
     title: "URL",
@@ -35,10 +36,10 @@ const endpointsColumns: ColumnsType<EndpointType> = [
       <Button
         type="text"
         // menu={settingsDropdownProps}
-        onClick={() => navigateTo(`data-sources/streams/${item.id}`)}
+        onClick={() => navigateTo(`endpoints/${item.id}`)}
         // icon={<DownOutlinedIcon />}
       >
-        Settings
+        Configure
       </Button>
     )
   }
