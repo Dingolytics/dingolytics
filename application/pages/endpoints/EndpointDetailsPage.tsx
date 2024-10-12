@@ -1,11 +1,10 @@
 /** General */
 import { Component } from "react";
-import { Breadcrumb, Space, Typography } from "antd";
+import { Breadcrumb, Col, Row, Space, Table, Typography } from "antd";
 const { Text, Paragraph } = Typography;
 
 /** Components */
 import LoadingState from "@/components/items-list/components/LoadingState";
-// import navigateTo from "@/components/router/navigateTo";
 import routeWithUserSession from "@/components/router/routeWithUserSession";
 
 /** Services */
@@ -20,6 +19,14 @@ type EndpointDetailsPageProps = {
 type EndpointDetailsPageState = {
   endpointItem: EndpointType | null;
   loading: boolean;
+}
+
+type RowType = {
+  name: string;
+  value: string | null | undefined;
+  pre?: boolean | undefined;
+  attrs?: object | undefined;
+  copyable?: boolean | undefined;
 }
 
 class EndpointDetailsPage extends Component<EndpointDetailsPageProps, EndpointDetailsPageState> {
@@ -48,6 +55,39 @@ class EndpointDetailsPage extends Component<EndpointDetailsPageProps, EndpointDe
   }
 
   render() {
+    const item = this.state.endpointItem;
+
+    const fullURL = item ? `${location.origin}${item.url}` : "";
+
+    const data = item ? [
+      {"name": "Description", "value": item.description},
+      {"name": "Endpoint URL", "value": fullURL, "attrs": {"copyable": true}},
+      {"name": "SQL (parameterized)", "value": item.query_text, "attrs": {"copyable": true, "code": true}},
+      {"name": "Parameters", "value": JSON.stringify(item.parameters), "pre": true},
+    ] : []
+
+    const columns = [
+      {
+        title: "Name",
+        dataIndex: "name",
+        key: "name",
+      },
+      {
+        title: "Value",
+        dataIndex: "value",
+        key: "value",
+        render: (_: any, item: RowType) => (
+          item.pre ? (
+            <pre style={{margin: 0, padding: 0}}>
+              <Text {...(item.attrs || {})}>{item.value}</Text>
+            </pre>
+          ) : (
+            <Text {...(item.attrs || {})}>{item.value}</Text>
+          )
+        ),
+      }
+    ]
+
     return (
       <Space direction="vertical">
         <Breadcrumb
@@ -76,9 +116,20 @@ class EndpointDetailsPage extends Component<EndpointDetailsPageProps, EndpointDe
           this.state.loading ? (
             <LoadingState className="" />
           ) : (
-            <Text>
-              {JSON.stringify(this.state.endpointItem)}
-            </Text>
+            <Row>
+              <Col span={24} lg={{span: 16}}>
+                <h3>{item!.name}</h3>
+
+                <Table
+                  showHeader={false}
+                  columns={columns}
+                  rowKey={(item) => item.name}
+                  dataSource={data}
+                  pagination={false}
+                  size="middle"
+                />
+              </Col>
+            </Row>
           )
         }
       </Space>

@@ -22,12 +22,19 @@ const endpointsColumns: ColumnsType<EndpointType> = [
   },
   {
     title: "URL",
-    dataIndex: "key",
-    key: "key",
+    dataIndex: "url",
+    key: "url",
     "width": "40%",
-    render: (_, item) => <Text copyable>{item.key}</Text>
+    render: (_, item) => <Text copyable>{item.url}</Text>
   },
   {
+    title: "Tags",
+    dataIndex: "tags",
+    key: "tags",
+    "width": "25%",
+    render: (_, item) => <Text>{JSON.stringify(item.tags)}</Text>
+  },
+  /*{
     title: "",
     dataIndex: "id",
     key: "id",
@@ -42,7 +49,7 @@ const endpointsColumns: ColumnsType<EndpointType> = [
         Configure
       </Button>
     )
-  }
+  }*/
 ]
 
 const EndpointsList: React.FC<ListComponentProps> = ({ items }) =>
@@ -51,7 +58,7 @@ const EndpointsList: React.FC<ListComponentProps> = ({ items }) =>
     <Text>There are no endpoints published yet.</Text>
   ) : (
     <Table
-      showHeader={false}
+      showHeader={true}
       columns={endpointsColumns}
       rowKey={(item) => item.id}
       dataSource={items}
