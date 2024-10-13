@@ -18,7 +18,6 @@ import DataSource, { annotateWithStreams } from "@/services/data-source";
 import routes from "@/services/routes";
 import { policy } from "@/services/policy";
 import Stream, { StreamType } from "@/services/stream";
-import { style } from "d3";
 
 /** Type definitions */
 type StreamsPageProps = {
@@ -102,10 +101,9 @@ class StreamsPage extends Component<StreamsPageProps, StreamsPageState> {
         />
 
         <Paragraph>
-          Streams are the core of your data collection pipeline.
-          Each stream corresponds to a table in your database, and ingest
-          endpoint is generated for each stream. Learn more about streams in
-          the <a>&ldquo;Documentation / Streams&rdquo;</a> chapter.
+          Streams are the core of your data collection pipeline. Each stream corresponds to a
+          table in your database, and ingest endpoint is generated for each stream.
+          <br />Learn more in the <a>&ldquo;Documentation / Streams&rdquo;</a> chapter.
         </Paragraph>
 
         <Space>

@@ -7,13 +7,15 @@ import "./admin/SystemStatus"
 import "./alerts/AlertsList"
 import "./alert/Alert"
 
+import "./endpoints/EndpointsPage"
+import "./endpoints/EndpointDetailsPage"
+
 import "./dashboards/DashboardList"
 import "./dashboards/DashboardPage"
 import "./dashboards/PublicDashboardPage"
 
 import "./data-sources/DataSourcesList"
 import "./data-sources/EditDataSource"
-import "./data-sources/EditStream"
 
 import "./destinations/DestinationsList"
 import "./destinations/EditDestination"
@@ -30,6 +32,7 @@ import "./queries/VisualizationEmbed"
 import "./settings/OrganizationSettings"
 
 import "./streams/StreamsList"
+import "./streams/EditStream"
 
 import "./users/UsersList"
 import "./users/UserProfile"
