@@ -60,7 +60,7 @@ class EndpointDetailsPage extends Component<EndpointDetailsPageProps, EndpointDe
     const fullURL = item ? `${location.origin}${item.url}` : "";
 
     const data = item ? [
-      {"name": "Description", "value": item.description},
+      {"name": "Description", "value": item.description || "—"},
       {"name": "Endpoint URL", "value": fullURL, "attrs": {"copyable": true}},
       {"name": "SQL (parameterized)", "value": item.query_text, "attrs": {"copyable": true, "code": true}},
       {"name": "Parameters", "value": JSON.stringify(item.parameters), "pre": true},
@@ -114,7 +114,7 @@ class EndpointDetailsPage extends Component<EndpointDetailsPageProps, EndpointDe
 
         {
           this.state.loading ? (
-            <LoadingState className="" />
+            <LoadingState skeleton={true} />
           ) : (
             <Row>
               <Col span={24} lg={{span: 16}}>
