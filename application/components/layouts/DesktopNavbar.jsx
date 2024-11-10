@@ -122,9 +122,9 @@ export default function DesktopNavbar() {
           (
             // currentUser.hasPermission("list_dashboards") &&
             getMenuItem(
-              (<Link href="widgets">Endpoints</Link>),
-              "widgets",
-              <EndpointsOutlinedIcon aria-label="Widgets navigation button" />
+              (<Link href="endpoints">Endpoints</Link>),
+              "endpoints",
+              <EndpointsOutlinedIcon aria-label="Endpoints navigation button" />
             )
           ),
           {
