@@ -6,13 +6,11 @@ type IdType = {
 
 export type EndpointType = {
   readonly id?: number;
-  key?: string;
   url: string;
   name: string;
   tags: string[];
   description?: string;
   parameters?: any;
-  query_id?: number;
   query_text?: string;
 }
 

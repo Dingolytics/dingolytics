@@ -6,34 +6,53 @@ const { Text } = Typography;
 
 import Link from "@/components/general/Link";
 import { EndpointType } from "@/services/EndpointsService";
-import navigateTo from "@/components/router/navigateTo";
+// import navigateTo from "@/components/router/navigateTo";
 
 type ListComponentProps = {
   items: any[];
 }
 
+function paramsToQueryString(params: { name: string; value: any }[]): string {
+  return params?.length ? '?' + params
+    .map(({ name, value }) => `${encodeURIComponent(`p_${name}`)}=${encodeURIComponent(value)}`)
+    .join('&') : '';
+}
+
 const endpointsColumns: ColumnsType<EndpointType> = [
   {
+    title: "ID",
+    dataIndex: "id",
+    key: "id",
+    "width": "5%",
+    render: (_, item) => <Text>{item.id}</Text>
+  },
+  {
     title: "Name",
-    dataIndex: "name",
-    key: "name",
-    "width": "35%",
+    "width": "25%",
     render: (_, item) => <Link href={`/endpoints/${item.id}`}>{item.name}</Link>
   },
   {
     title: "URL",
-    dataIndex: "url",
-    key: "url",
-    "width": "40%",
-    render: (_, item) => <Text copyable>{item.url}</Text>
+    "width": "35%",
+    render: (_, item) => (
+      <Text
+        style={{width: 240}}
+        ellipsis={true}
+        copyable
+      >{`${item.url}${paramsToQueryString(item.parameters)}`}</Text>
+    )
+  },
+  {
+    title: "Parameters",
+    "width": "20%",
+    render: (_, item) => <Text>{paramsToQueryString(item.parameters)}</Text>
   },
   {
     title: "Tags",
-    dataIndex: "tags",
-    key: "tags",
-    "width": "25%",
-    render: (_, item) => <Text>{JSON.stringify(item.tags)}</Text>
+    "width": "15%",
+    render: (_, item) => <Text>{item.tags.join(', ')}</Text>
   },
+
   /*{
     title: "",
     dataIndex: "id",
