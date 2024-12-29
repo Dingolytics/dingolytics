@@ -17,9 +17,6 @@ function EmptyState({ title, message, refreshButton }) {
   return (
     <div className="query-results-empty-state">
       <div className="empty-state-content">
-        <div>
-          <img src="static/images/illustrations/no-query-results.svg" alt="No Query Results Illustration" />
-        </div>
         <h3>{title}</h3>
         <div className="m-b-20">{message}</div>
         {refreshButton}
@@ -158,7 +155,7 @@ export default function QueryVisualizationTabs({
               title="Query has no result"
               message={
                 canRefresh
-                  ? "Execute/Refresh the query to show results."
+                  ? "Execute or refresh the query to show results."
                   : "You do not have a permission to execute/refresh this query."
               }
               refreshButton={refreshButton}

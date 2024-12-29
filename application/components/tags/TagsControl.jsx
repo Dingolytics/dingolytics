@@ -1,6 +1,7 @@
 import { map, trim } from "@lodash";
 import React from "react";
 import PropTypes from "prop-types";
+import { Tag } from "antd";
 import Tooltip from "@/components/general/Tooltip";
 import EditTagsDialog from "./EditTagsDialog";
 import PlainButton from "@/components/general/PlainButton";
@@ -76,17 +77,17 @@ export class TagsControl extends React.Component {
 }
 
 function modelTagsControl({ archivedTooltip }) {
-  // See comment for `propTypes`/`defaultProps`
-  // eslint-disable-next-line react/prop-types
-  function ModelTagsControl({ isDraft, isArchived, ...props }) {
+  function ModelTagsControl({ isDraft, isArchived, isPublished, ...props }) {
+    const archivedTag = Boolean(isArchived);
+    const draftTag = !archivedTag && Boolean(isDraft);
+    const publishedTag = !archivedTag && !draftTag && Boolean(isPublished);
     return (
       <TagsControl {...props}>
-        {!isArchived && isDraft && <span className="label label-tag-unpublished">Unpublished</span>}
-        {isArchived && (
-          <Tooltip placement="right" title={archivedTooltip}>
-            <span className="label label-tag-archived">Archived</span>
-          </Tooltip>
+        {archivedTag && (
+          <Tooltip placement="right" title={archivedTooltip}><Tag>archived</Tag></Tooltip>
         )}
+        {draftTag && <Tag>draft</Tag>}
+        {publishedTag && <Tag>published</Tag>}
       </TagsControl>
     );
   }

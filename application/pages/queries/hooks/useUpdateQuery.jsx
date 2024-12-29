@@ -95,6 +95,7 @@ export default function useUpdateQuery(query, onChange) {
           "options",
           "latest_query_data_id",
           "is_draft",
+          "is_published",
           "tags",
         ]);
       }

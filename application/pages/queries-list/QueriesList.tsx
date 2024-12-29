@@ -89,6 +89,7 @@ const listColumns = [
       tags={item.tags}
       isDraft={item.is_draft}
       isArchived={item.is_archived}
+      isPublished={item.is_published}
     />
   ), {
     title: "Tags",
