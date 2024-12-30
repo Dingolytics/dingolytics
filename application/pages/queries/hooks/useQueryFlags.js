@@ -12,6 +12,7 @@ export default function useQueryFlags(query, dataSource = null) {
       isNew: isNil(query.id),
       isDraft: query.is_draft,
       isArchived: query.is_archived,
+      isPublished: query.is_published,
 
       // permissions flags
       canCreate: currentUser.hasPermission("create_query"),

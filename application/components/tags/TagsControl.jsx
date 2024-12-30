@@ -76,7 +76,7 @@ export class TagsControl extends React.Component {
   }
 }
 
-function modelTagsControl({ archivedTooltip }) {
+function modelTagsControl({ archivedTooltip, draftTooltip, publishedTooltip }) {
   function ModelTagsControl({ isDraft, isArchived, isPublished, ...props }) {
     const archivedTag = Boolean(isArchived);
     const draftTag = !archivedTag && Boolean(isDraft);
@@ -84,10 +84,14 @@ function modelTagsControl({ archivedTooltip }) {
     return (
       <TagsControl {...props}>
         {archivedTag && (
-          <Tooltip placement="right" title={archivedTooltip}><Tag>archived</Tag></Tooltip>
+          <Tooltip title={archivedTooltip}><Tag>archived</Tag></Tooltip>
         )}
-        {draftTag && <Tag>draft</Tag>}
-        {publishedTag && <Tag>published</Tag>}
+        {draftTag && (
+          <Tooltip title={draftTooltip}><Tag>draft</Tag></Tooltip>
+        )}
+        {publishedTag && (
+          <Tooltip title={publishedTooltip}><Tag color="success">published</Tag></Tooltip>
+        )}
       </TagsControl>
     );
   }
@@ -106,9 +110,13 @@ function modelTagsControl({ archivedTooltip }) {
 }
 
 export const QueryTagsControl = modelTagsControl({
-  archivedTooltip: "This query is archived and can't be used in dashboards, or appear in search results.",
+  archivedTooltip: "Archived query can't be used for endpoints and not auto-refreshed.",
+  draftTooltip: "Draft query can't be shared or used for endpoints.",
+  publishedTooltip: "Published query results are exposed through endpoint.",
 });
 
 export const DashboardTagsControl = modelTagsControl({
   archivedTooltip: "This dashboard is archived and won't be listed in dashboards nor search results.",
+  draftTooltip: "This is a draft dashboardand (not shared across your organization).",
+  publishedTooltip: "This dashboard is published.",
 });

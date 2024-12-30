@@ -7,6 +7,6 @@ export default function useUnpublishQuery(query, onChange) {
 
   return useCallback(() => {
     recordEvent("toggle_published", "query", query.id);
-    updateQuery({ is_draft: true });
+    updateQuery({ is_published: false });
   }, [query.id, updateQuery]);
 }

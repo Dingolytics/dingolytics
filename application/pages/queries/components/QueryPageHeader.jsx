@@ -1,9 +1,7 @@
 import { extend, map, filter, reduce } from "@lodash";
 import React, { useMemo } from "react";
 import PropTypes from "prop-types";
-import Button from "antd/lib/button";
-import Dropdown from "antd/lib/dropdown";
-import Menu from "antd/lib/menu";
+import { Button, Dropdown, Menu, Space } from "antd";
 import EllipsisOutlinedIcon from "@ant-design/icons/EllipsisOutlined";
 import useMedia from "use-media";
 import Link from "@/components/general/Link";
@@ -74,7 +72,7 @@ export default function QueryPageHeader({
   const isDesktop = useMedia({ minWidth: 768 });
   const queryFlags = useQueryFlags(query, dataSource);
   const updateName = useRenameQuery(query, onChange);
-  const updateTags = useUpdateQueryTags(query, onChange);
+  // const updateTags = useUpdateQueryTags(query, onChange);
   const archiveQuery = useArchiveQuery(query, onChange);
   const publishQuery = usePublishQuery(query, onChange);
   const unpublishQuery = useUnpublishQuery(query, onChange);
@@ -82,19 +80,26 @@ export default function QueryPageHeader({
   const openQueryShareAPIDialog = useShareQueryAPIDialog(query, onChange);
   const openPermissionsEditorDialog = usePermissionsEditorDialog(query);
 
+  const showPublishAction = (
+    queryFlags.canEdit &&
+    !queryFlags.isNew &&
+    !queryFlags.isArchived &&
+    !queryFlags.isPublished
+  );
+
   const moreActionsMenu = useMemo(
     () =>
       createMenu([
         {
-          fork: {
-            isEnabled: !queryFlags.isNew && queryFlags.canFork && !isDuplicating,
-            title: (
-              <React.Fragment>
-                Fork <i className="fa fa-external-link m-l-5" aria-hidden="true" />
-                <span className="sr-only">(opens in a new tab)</span>
-              </React.Fragment>
-            ),
-            onClick: duplicateQuery,
+          publish: {
+            isAvailable: !queryFlags.isNew && queryFlags.canEdit && showPublishAction,
+            title: "Publish",
+            onClick: publishQuery,
+          },
+          unpublish: {
+            isAvailable: !queryFlags.isNew && queryFlags.canEdit && !showPublishAction,
+            title: "Unpublish",
+            onClick: unpublishQuery,
           },
         },
         {
@@ -103,25 +108,19 @@ export default function QueryPageHeader({
             title: "Archive",
             onClick: archiveQuery,
           },
+          fork: {
+            isEnabled: !queryFlags.isNew && queryFlags.canFork && !isDuplicating,
+            title: "Fork",
+            onClick: duplicateQuery,
+          },
+        },
+        {
           managePermissions: {
             isAvailable:
               !queryFlags.isNew && queryFlags.canEdit && !queryFlags.isArchived && clientConfig.showPermissionsControl,
             title: "Manage Permissions",
             onClick: openPermissionsEditorDialog,
           },
-          publish: {
-            isAvailable:
-              !isDesktop && queryFlags.isDraft && !queryFlags.isArchived && !queryFlags.isNew && queryFlags.canEdit,
-            title: "Publish",
-            onClick: publishQuery,
-          },
-          unpublish: {
-            isAvailable: !clientConfig.disablePublish && !queryFlags.isNew && queryFlags.canEdit && !queryFlags.isDraft,
-            title: "Unpublish",
-            onClick: unpublishQuery,
-          },
-        },
-        {
           showAPIKey: {
             isAvailable: !clientConfig.disablePublicUrls && !queryFlags.isNew,
             title: "Show API Key",
@@ -135,6 +134,7 @@ export default function QueryPageHeader({
       queryFlags.canEdit,
       queryFlags.isArchived,
       queryFlags.isDraft,
+      queryFlags.isPublished,
       isDuplicating,
       duplicateQuery,
       archiveQuery,
@@ -157,41 +157,34 @@ export default function QueryPageHeader({
             </h3>
           </div>
         </div>
-        {/* <div className="query-tags">
+        <div className="query-tags">
           <QueryTagsControl
-            tags={query.tags}
+            // tags={query.tags}
             isDraft={queryFlags.isDraft}
             isArchived={queryFlags.isArchived}
-            canEdit={queryFlags.canEdit}
-            getAvailableTags={getQueryTags}
-            onEdit={updateTags}
-            tagsExtra={tagsExtra}
+            isPublished={queryFlags.isPublished}
+            // canEdit={queryFlags.canEdit}
+            // getAvailableTags={getQueryTags}
+            // onEdit={updateTags}
+            // tagsExtra={tagsExtra}
           />
-        </div> */}
+        </div>
       </div>
-      <div className="header-actions">
+      <Space>
         {headerExtra}
-        {isDesktop && queryFlags.isDraft && !queryFlags.isArchived && !queryFlags.isNew && queryFlags.canEdit && (
-          <Button className="m-r-5" onClick={publishQuery}>
-            <i className="fa fa-paper-plane m-r-5" aria-hidden="true" /> Publish
-          </Button>
-        )}
 
         {!queryFlags.isNew && queryFlags.canViewSource && (
           <span>
             {!sourceMode && (
-              <Link.Button className="m-r-5" href={query.getUrl(true, selectedVisualization)}>
-                <i className="fa fa-pencil-square-o" aria-hidden="true" />
-                <span className="m-l-5">Edit Source</span>
+              <Link.Button href={query.getUrl(true, selectedVisualization)}>
+                Edit Source
               </Link.Button>
             )}
             {sourceMode && (
               <Link.Button
-                className="m-r-5"
                 href={query.getUrl(false, selectedVisualization)}
                 data-test="QueryPageShowResultOnly">
-                <i className="fa fa-table" aria-hidden="true" />
-                <span className="m-l-5">Show Results Only</span>
+                Show Results Only
               </Link.Button>
             )}
           </span>
@@ -204,7 +197,7 @@ export default function QueryPageHeader({
             </Button>
           </Dropdown>
         )}
-      </div>
+      </Space>
     </div>
   );
 }

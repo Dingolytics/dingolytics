@@ -194,7 +194,7 @@ function DashboardControl({ dashboardConfiguration, headerExtra }) {
         <span className="hidden-print">
           {showPublishButton && (
             <Button className="m-r-5 hidden-xs" onClick={togglePublished}>
-              <span className="fa fa-paper-plane m-r-5" /> Publish
+              Publish
             </Button>
           )}
           {showRefreshButton && <RefreshButton dashboardConfiguration={dashboardConfiguration} />}
